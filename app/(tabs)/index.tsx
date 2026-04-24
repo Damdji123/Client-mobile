@@ -1,98 +1,217 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useAuth } from '../../context/AuthContext';
+import { useCart } from '../../context/CartContext';
+import { LogOut, LayoutDashboard, Pill, ShoppingCart, User, ArrowRight } from 'lucide-react-native';
+import { useRouter } from 'expo-router';
+import Footer from '../../components/Footer';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+export default function DashboardScreen() {
+  const { user, logout } = useAuth();
+  const { cartCount } = useCart();
+  const router = useRouter();
 
-export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <SafeAreaView style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.header}>
+          <View>
+            <Text style={styles.welcomeText}>Hello,</Text>
+            <Text style={styles.userName}>{user?.first_name || 'Customer'}</Text>
+          </View>
+          <TouchableOpacity style={styles.profileButton} onPress={() => router.push('/(tabs)/profile')}>
+            <User size={24} color="#033487" />
+          </TouchableOpacity>
+        </View>
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+        <View style={styles.statsContainer}>
+          <TouchableOpacity style={styles.statCard} onPress={() => router.push('/(tabs)/cart')}>
+            <Text style={styles.statValue}>{cartCount}</Text>
+            <Text style={styles.statLabel}>Cart Items</Text>
+            <View style={styles.statIconContainer}>
+              <ShoppingCart size={20} color="rgba(255,255,255,0.6)" />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.statCard, { backgroundColor: '#10B981' }]}>
+            <Text style={styles.statValue}>0</Text>
+            <Text style={styles.statLabel}>Active Orders</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Quick Actions</Text>
+        </View>
+
+        <View style={styles.menuGrid}>
+          <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/(tabs)/catalog')}>
+            <View style={[styles.menuIcon, { backgroundColor: '#eff6ff' }]}>
+              <Pill size={28} color="#2563eb" />
+            </View>
+            <View style={styles.menuInfo}>
+              <Text style={styles.menuText}>Browse Catalog</Text>
+              <Text style={styles.menuSubtext}>Find your medications</Text>
+            </View>
+            <ArrowRight size={20} color="#cbd5e1" />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/(tabs)/cart')}>
+            <View style={[styles.menuIcon, { backgroundColor: '#f0fdf4' }]}>
+              <ShoppingCart size={28} color="#16a34a" />
+            </View>
+            <View style={styles.menuInfo}>
+              <Text style={styles.menuText}>My Shopping Cart</Text>
+              <Text style={styles.menuSubtext}>View selected items</Text>
+            </View>
+            <ArrowRight size={20} color="#cbd5e1" />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.menuItem} onPress={() => router.push('/(tabs)/orders')}>
+            <View style={[styles.menuIcon, { backgroundColor: '#fdf2f8' }]}>
+              <LayoutDashboard size={28} color="#db2777" />
+            </View>
+            <View style={styles.menuInfo}>
+              <Text style={styles.menuText}>Order History</Text>
+              <Text style={styles.menuSubtext}>Track your deliveries</Text>
+            </View>
+            <ArrowRight size={20} color="#cbd5e1" />
+          </TouchableOpacity>
+        </View>
+
+        <Footer />
+        <View style={{ height: 40 }} />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 24,
+    paddingTop: 20,
+  },
+  welcomeText: {
+    fontSize: 16,
+    color: '#64748b',
+  },
+  userName: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#0f172a',
+  },
+  profileButton: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: '#f1f5f9',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    padding: 24,
+    paddingTop: 0,
+    gap: 16,
+  },
+  statCard: {
+    flex: 1,
+    backgroundColor: '#033487',
+    padding: 20,
+    borderRadius: 24,
+    shadowColor: '#033487',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 5,
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  statValue: {
+    fontSize: 32,
+    fontWeight: '800',
+    color: '#ffffff',
+  },
+  statLabel: {
+    fontSize: 14,
+    color: 'rgba(255, 255, 255, 0.8)',
+    marginTop: 4,
+  },
+  statIconContainer: {
+    position: 'absolute',
+    right: -10,
+    bottom: -10,
+    opacity: 0.5,
+  },
+  sectionHeader: {
+    paddingHorizontal: 24,
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#1e293b',
+  },
+  menuGrid: {
+    paddingHorizontal: 24,
+    gap: 16,
+  },
+  menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    backgroundColor: '#ffffff',
+    padding: 16,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#f1f5f9',
+    gap: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  menuIcon: {
+    width: 56,
+    height: 56,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  menuInfo: {
+    flex: 1,
+  },
+  menuText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#1e293b',
+  },
+  menuSubtext: {
+    fontSize: 13,
+    color: '#94a3b8',
+    marginTop: 2,
+  },
+  logoutButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 24,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#fee2e2',
+    backgroundColor: '#fffafb',
+    borderRadius: 16,
+    gap: 10,
+  },
+  logoutText: {
+    color: '#ef4444',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });

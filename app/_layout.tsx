@@ -1,24 +1,59 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import React, { useState, useEffect } from "react";
+import { Stack, useRouter, useSegments } from "expo-router";
+import * as SplashScreen from 'expo-splash-screen';
+import CustomSplashScreen from "../components/CustomSplashScreen";
+import { AuthProvider, useAuth } from "../context/AuthContext";
+import { CartProvider } from "../context/CartContext";
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+// Prevent the native splash screen from auto-hiding
+SplashScreen.preventAutoHideAsync();
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+function RootLayoutNav() {
+  const { isAuthenticated, isLoading } = useAuth();
+  const [customSplashFinished, setCustomSplashFinished] = useState(false);
+  const segments = useSegments();
+  const router = useRouter();
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  useEffect(() => {
+    if (isLoading || !customSplashFinished) return;
+
+    const inAuthGroup = segments[0] === '(auth)';
+
+    if (!isAuthenticated && !inAuthGroup) {
+      // Redirect to login if not authenticated
+      router.replace('/(auth)/login');
+    } else if (isAuthenticated && inAuthGroup) {
+      // Redirect to home (tabs) if authenticated
+      router.replace('/(tabs)');
+    }
+  }, [isAuthenticated, isLoading, customSplashFinished, segments]);
+
+  if (!customSplashFinished) {
+    return (
+      <CustomSplashScreen 
+        onAnimationFinish={() => setCustomSplashFinished(true)} 
+      />
+    );
+  }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+    </Stack>
+  );
+}
+
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+
+export default function RootLayout() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <AuthProvider>
+        <CartProvider>
+          <RootLayoutNav />
+        </CartProvider>
+      </AuthProvider>
+    </GestureHandlerRootView>
   );
 }
