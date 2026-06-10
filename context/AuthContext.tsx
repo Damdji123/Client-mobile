@@ -61,9 +61,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const checkLoginStatus = async () => {
     try {
       const token = await SecureStore.getItemAsync('client_access');
+      console.log('[Auth] Checking token:', token ? 'Found' : 'Not found');
       if (token) {
-        setIsAuthenticated(true);
         await fetchProfile();
+        setIsAuthenticated(true);
         setIsLoading(false);
       } else {
         setIsLoading(false);
@@ -96,10 +97,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
 
       await saveTokens(res.data.access, res.data.refresh);
-      setIsAuthenticated(true);
-      // Small delay to ensure SecureStore is flushed
-      await new Promise(resolve => setTimeout(resolve, 100));
       await fetchProfile();
+      setIsAuthenticated(true);
     } catch (error) {
       console.error('Google Login Error:', error);
     } finally {
@@ -115,22 +114,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
 
       if (res.data.role !== 'CLIENT') {
-        throw new Error('Access denied: You are not authorized.');
+        throw new Error('Access denied. This portal is for customers only. Please use the Pharmacist app.');
       }
 
       await saveTokens(res.data.access, res.data.refresh);
-      setIsAuthenticated(true);
-      // Small delay to ensure SecureStore is flushed
-      await new Promise(resolve => setTimeout(resolve, 100));
       await fetchProfile();
-    } catch (error) {
+      setIsAuthenticated(true);
+    } catch (error: any) {
+      // Network error (no response) — likely IP/connectivity issue
+      if (!error.response && error.message === 'Network Error') {
+        throw new Error(
+          'Unable to connect to the server. Please make sure you are on the same Wi-Fi network as the server, and the server is running.'
+        );
+      }
       throw error;
     }
   };
 
   const saveTokens = async (access: string, refresh: string) => {
+    console.log('[Auth] Saving tokens...');
     await SecureStore.setItemAsync('client_access', access);
     await SecureStore.setItemAsync('client_refresh', refresh);
+    console.log('[Auth] Tokens saved.');
   };
 
   const logout = async () => {

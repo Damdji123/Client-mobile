@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   StyleSheet,
   View,
@@ -10,33 +10,68 @@ import {
   Platform,
   ScrollView,
   ActivityIndicator,
-  Alert
+  Animated,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../context/AuthContext';
-import { Eye, EyeOff } from 'lucide-react-native';
+import { Eye, EyeOff, AlertCircle } from 'lucide-react-native';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
   const { login, promptGoogleLogin, googleLoading } = useAuth();
   const router = useRouter();
 
+  // Shake animation for the form on error
+  const shakeAnim = useRef(new Animated.Value(0)).current;
+
+  const shake = () => {
+    Animated.sequence([
+      Animated.timing(shakeAnim, { toValue: 10, duration: 60, useNativeDriver: true }),
+      Animated.timing(shakeAnim, { toValue: -10, duration: 60, useNativeDriver: true }),
+      Animated.timing(shakeAnim, { toValue: 8, duration: 60, useNativeDriver: true }),
+      Animated.timing(shakeAnim, { toValue: -8, duration: 60, useNativeDriver: true }),
+      Animated.timing(shakeAnim, { toValue: 0, duration: 60, useNativeDriver: true }),
+    ]).start();
+  };
+
+  const clearAndShowError = (msg: string) => {
+    setEmail('');
+    setPassword('');
+    setErrorMsg(msg);
+    shake();
+  };
+
   const handleLogin = async () => {
-    if (!email || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
+    setErrorMsg('');
+    if (!email.trim() || !password) {
+      setErrorMsg('Please fill in both email and password.');
+      shake();
       return;
     }
 
     setIsLoading(true);
     try {
-      await login({ email, password });
+      await login({ email: email.trim(), password });
       router.replace('/');
     } catch (err: any) {
-      const msg = err.response?.data?.error || err.message || 'Login failed. Please check your credentials.';
-      Alert.alert('Login Failed. Please check your credentials', msg);
+      const httpStatus = err?.response?.status;
+      if (!err?.response) {
+        // Pure network error — don't clear credentials since it's not their fault
+        setErrorMsg('Unable to connect to the server. Make sure you are on the same Wi-Fi as the server and the backend is running.');
+        shake();
+      } else if (httpStatus === 403) {
+        clearAndShowError(err.response?.data?.error || 'Your account has been blocked. Please contact support.');
+      } else {
+        const serverMsg =
+          err.response?.data?.error ||
+          err.response?.data?.non_field_errors?.[0] ||
+          err.response?.data?.detail;
+        clearAndShowError(serverMsg || 'Invalid email or password. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -47,7 +82,7 @@ export default function LoginScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
         <View style={styles.header}>
           <View style={styles.logoContainer}>
             <Image
@@ -59,17 +94,27 @@ export default function LoginScreen() {
           <Text style={styles.subtitle}>Login to access pharmacy services</Text>
         </View>
 
-        <View style={styles.form}>
+        <Animated.View style={[styles.form, { transform: [{ translateX: shakeAnim }] }]}>
+
+          {/* Inline error banner */}
+          {errorMsg !== '' && (
+            <View style={styles.errorBanner}>
+              <AlertCircle size={18} color="#b91c1c" />
+              <Text style={styles.errorBannerText}>{errorMsg}</Text>
+            </View>
+          )}
+
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Email Address</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, errorMsg !== '' && styles.inputError]}
               placeholder="john@example.com"
               value={email}
-              onChangeText={setEmail}
+              onChangeText={(t) => { setEmail(t); setErrorMsg(''); }}
               keyboardType="email-address"
               autoCapitalize="none"
               placeholderTextColor="#94a3b8"
+              editable={!isLoading}
             />
           </View>
 
@@ -77,12 +122,13 @@ export default function LoginScreen() {
             <Text style={styles.label}>Password</Text>
             <View style={styles.passwordContainer}>
               <TextInput
-                style={[styles.input, { paddingRight: 50 }]}
+                style={[styles.input, { paddingRight: 50 }, errorMsg !== '' && styles.inputError]}
                 placeholder="••••••••"
                 value={password}
-                onChangeText={setPassword}
+                onChangeText={(t) => { setPassword(t); setErrorMsg(''); }}
                 secureTextEntry={!showPassword}
                 placeholderTextColor="#94a3b8"
+                editable={!isLoading}
               />
               <TouchableOpacity
                 style={styles.eyeIcon}
@@ -93,7 +139,7 @@ export default function LoginScreen() {
             </View>
           </View>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.forgotPassword}
             onPress={() => router.push('/(auth)/forgot_password')}
           >
@@ -120,7 +166,7 @@ export default function LoginScreen() {
 
           <TouchableOpacity
             style={[styles.googleButton, googleLoading && styles.disabledButton]}
-            onPress={() => promptGoogleLogin()}
+            onPress={() => { setErrorMsg(''); promptGoogleLogin(); }}
             disabled={isLoading || googleLoading}
           >
             {googleLoading ? (
@@ -142,7 +188,16 @@ export default function LoginScreen() {
               <Text style={styles.registerLinkText}>Register here</Text>
             </TouchableOpacity>
           </View>
-        </View>
+
+          <TouchableOpacity
+            onPress={() => router.push('/public_feedback' as any)}
+            style={{ marginTop: 20, alignItems: 'center' }}
+          >
+            <Text style={{ color: '#64748b', fontSize: 14, textDecorationLine: 'underline' }}>
+              Have a question? Send us feedback
+            </Text>
+          </TouchableOpacity>
+        </Animated.View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -190,6 +245,24 @@ const styles = StyleSheet.create({
   form: {
     width: '100%',
   },
+  errorBanner: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 10,
+    backgroundColor: '#fef2f2',
+    borderWidth: 1,
+    borderColor: '#fca5a5',
+    borderRadius: 10,
+    padding: 14,
+    marginBottom: 20,
+  },
+  errorBannerText: {
+    flex: 1,
+    color: '#b91c1c',
+    fontSize: 14,
+    fontWeight: '500',
+    lineHeight: 20,
+  },
   inputGroup: {
     marginBottom: 20,
   },
@@ -207,6 +280,10 @@ const styles = StyleSheet.create({
     padding: 16,
     fontSize: 16,
     color: '#0f172a',
+  },
+  inputError: {
+    borderColor: '#fca5a5',
+    backgroundColor: '#fff5f5',
   },
   passwordContainer: {
     position: 'relative',

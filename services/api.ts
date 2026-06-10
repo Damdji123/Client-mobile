@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 
 // We use the local IP of your machine so the mobile device can connect
-const BASE_URL = 'http://192.168.1.6:8000/api/';
+const BASE_URL = 'https://loutfi-backend.onrender.com/api/';
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -15,21 +15,13 @@ api.interceptors.request.use(
       const token = await SecureStore.getItemAsync('client_access');
       const url = config.url || '';
       
-      const isPublicRoute = url.includes('login') || 
-                            url.includes('register') || 
-                            url.includes('medicines');
+      // Define public routes that don't need a token
+      const publicRoutes = ['login', 'register', 'google-login', 'password-reset'];
+      const isPublicRoute = publicRoutes.some(route => url.includes(route)) || (url === 'medicines/' && config.method === 'get');
       
-      if (token && !isPublicRoute) {
-        // Use set method if available, otherwise direct assignment
-        if (config.headers && typeof config.headers.set === 'function') {
-           config.headers.set('Authorization', `Bearer ${token}`);
-        } else {
-           config.headers = {
-             ...(config.headers || {}),
-             Authorization: `Bearer ${token}`
-           } as any;
-        }
-        console.log(`[API] Auth attached to: ${url}`);
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+        // console.log(`[API] Auth attached to: ${url}`);
       } else if (!isPublicRoute) {
         console.warn(`[API] NO TOKEN for private route: ${url}`);
       }
@@ -57,7 +49,7 @@ api.interceptors.response.use(
 export const getImageUrl = (url: string | null | undefined): string | undefined => {
   if (!url) return undefined;
   if (url.startsWith('http')) {
-     return url.replace('localhost', '192.168.1.6').replace('127.0.0.1', '192.168.1.6');
+     return url.replace('localhost', '192.168.1.4').replace('127.0.0.1', '192.168.1.4');
   }
   return `${BASE_URL.replace('/api/', '')}${url}`;
 };

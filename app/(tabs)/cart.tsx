@@ -80,14 +80,14 @@ export default function CartScreen() {
     return sum + (parseFloat(item.medicine_detail?.price || 0) * item.quantity);
   }, 0);
   
-  const deliveryFee = 5.00;
+  const deliveryFee = 15000;
   const total = subtotal + deliveryFee;
 
   const renderCartItem = ({ item }: { item: any }) => (
     <View style={styles.cartCard}>
       <View style={styles.itemInfo}>
         <Text style={styles.itemName}>{item.medicine_detail?.name || 'Unknown Item'}</Text>
-        <Text style={styles.itemPrice}>${parseFloat(item.medicine_detail?.price || 0).toFixed(2)} / unit</Text>
+        <Text style={styles.itemPrice}>UGX {parseFloat(item.medicine_detail?.price || 0).toLocaleString()} / unit</Text>
       </View>
       
       <View style={styles.controls}>
@@ -155,15 +155,15 @@ export default function CartScreen() {
           <View style={styles.footer}>
             <View style={styles.summaryRow}>
               <Text style={styles.summaryLabel}>Subtotal</Text>
-              <Text style={styles.summaryValue}>${subtotal.toFixed(2)}</Text>
+              <Text style={styles.summaryValue}>UGX {subtotal.toLocaleString()}</Text>
             </View>
             <View style={styles.summaryRow}>
               <Text style={styles.summaryLabel}>Delivery Fee</Text>
-              <Text style={styles.summaryValue}>${deliveryFee.toFixed(2)}</Text>
+              <Text style={styles.summaryValue}>UGX {deliveryFee.toLocaleString()}</Text>
             </View>
             <View style={[styles.summaryRow, styles.totalRow]}>
               <Text style={styles.totalLabel}>Total Amount</Text>
-              <Text style={styles.totalValue}>${total.toFixed(2)}</Text>
+              <Text style={styles.totalValue}>UGX {total.toLocaleString()}</Text>
             </View>
 
             <TouchableOpacity style={styles.checkoutBtn} onPress={() => router.push('/(tabs)/checkout')}>

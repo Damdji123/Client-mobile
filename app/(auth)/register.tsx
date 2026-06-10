@@ -31,15 +31,17 @@ export default function RegisterScreen() {
   const { promptGoogleLogin, googleLoading } = useAuth();
 
   const handleRegister = async () => {
-    const { name, email, password, confirmPassword } = formData;
+    const { name, email, phone, password, confirmPassword } = formData;
 
-    if (!name || !email || !password || !confirmPassword) {
+    if (!name || !email || !phone || !password || !confirmPassword) {
       Alert.alert('Error', 'Please fill in all required fields');
       return;
     }
 
     if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
+      // Only clear the password fields, not the rest
+      setFormData(prev => ({ ...prev, password: '', confirmPassword: '' }));
+      Alert.alert('Error', 'Passwords do not match. Please re-enter your password.');
       return;
     }
 
@@ -49,6 +51,7 @@ export default function RegisterScreen() {
         username: email,
         email: email,
         first_name: name,
+        phone: phone,
         password: password,
         role: 'CLIENT'
       };
@@ -57,7 +60,15 @@ export default function RegisterScreen() {
         { text: 'OK', onPress: () => router.replace('/(auth)/login') }
       ]);
     } catch (err: any) {
-      const msg = err.response?.data?.error || 'Registration failed. Try again.';
+      // Clear password fields only on failure
+      setFormData(prev => ({ ...prev, password: '', confirmPassword: '' }));
+      const data = err.response?.data;
+      const msg = data?.error
+        || data?.email?.[0]
+        || data?.username?.[0]
+        || data?.password?.[0]
+        || (data ? Object.values(data).flat().join(' ') : null)
+        || (!err.response ? 'Cannot connect to the server.' : 'Registration failed. Please try again.');
       Alert.alert('Registration Failed', msg);
     } finally {
       setIsLoading(false);
@@ -110,7 +121,7 @@ export default function RegisterScreen() {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Phone Number (Optional)</Text>
+            <Text style={styles.label}>Phone Number</Text>
             <TextInput
               style={styles.input}
               placeholder="+1 234 567 890"

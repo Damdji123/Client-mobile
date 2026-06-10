@@ -9,8 +9,8 @@ export default function AboutScreen() {
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Placeholder for Hero Image */}
         <View style={styles.heroContainer}>
-          <Image 
-            source={require('../../assets/images/logo.png')} 
+          <Image
+            source={require('../../assets/images/logo.png')}
             style={styles.heroImg}
             resizeMode="contain"
           />
@@ -20,7 +20,7 @@ export default function AboutScreen() {
         <View style={styles.contentSection}>
           <Text style={styles.pageTitle}>About Us</Text>
           <Text style={styles.description}>
-            At Loutfi Pharmacy Uganda Limited we play a key role in providing quality healthcare.
+            At Loutfi Pharmacy Comoros, we play a key role in providing quality healthcare.
             Being legally registered with the regulatory body of pharmacy professionals, and
             the General Pharmaceutical Council, we pride in our expertise in medical and clinical
             services.
@@ -34,10 +34,10 @@ export default function AboutScreen() {
           <View style={styles.valuesCard}>
             <Text style={styles.subtitle}>MEDICAL EXCELLENCE, COMPASSIONATE CARE</Text>
             <Text style={styles.mainHeading}>What we stand for?</Text>
-            
+
             <Text style={styles.subHeading}>Our core values</Text>
             <Text style={styles.text}>
-              You can always count on Loutfi Pharmacy Uganda Limited's help with all your medical needs.
+              You can always count on Loutfi Pharmacy's help with all your medical needs.
             </Text>
 
             <Text style={styles.subHeading}>OUR MISSION</Text>
@@ -56,7 +56,7 @@ export default function AboutScreen() {
               <View style={styles.listItem}>
                 <View style={styles.bullet} />
                 <Text style={styles.listText}>
-                   <Text style={styles.bold}>Assured product quality</Text> and affordability coupled with innovative technologies.
+                  <Text style={styles.bold}>Assured product quality</Text> and affordability coupled with innovative technologies.
                 </Text>
               </View>
               <View style={styles.listItem}>

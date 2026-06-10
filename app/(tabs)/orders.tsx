@@ -1,24 +1,29 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { 
-  StyleSheet, 
-  View, 
-  Text, 
-  FlatList, 
-  ActivityIndicator, 
+import {
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+  ActivityIndicator,
   RefreshControl,
   TouchableOpacity,
   Alert
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import api from '../../services/api';
-import { Package, Calendar, DollarSign, ChevronRight, Clock } from 'lucide-react-native';
+import { Package, Calendar, DollarSign, ChevronRight, Clock, Trash2 } from 'lucide-react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import Footer from '../../components/Footer';
+import { XCircle } from 'lucide-react-native';
 
 export default function OrdersScreen() {
   const [orders, setOrders] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const params = useLocalSearchParams();
+  const filterId = params.id;
+  const router = useRouter();
 
   const fetchOrders = async () => {
     try {
@@ -44,6 +49,50 @@ export default function OrdersScreen() {
     fetchOrders();
   };
 
+  const handleHideOrder = (id: number) => {
+    Alert.alert(
+      "Delete Order",
+      "Are you sure you want to delete this order from your history?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await api.post(`orders/${id}/delete_order_client/`);
+              fetchOrders();
+            } catch (err) {
+              Alert.alert("Error", "Failed to delete order.");
+            }
+          }
+        }
+      ]
+    );
+  };
+
+  const handleClearHistory = () => {
+    Alert.alert(
+      "Clear History",
+      "Are you sure you want to clear all finished order history (Delivered/Declined)?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Clear All",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await api.post('orders/clear_history/');
+              fetchOrders();
+            } catch (err) {
+              Alert.alert("Error", "Failed to clear history.");
+            }
+          }
+        }
+      ]
+    );
+  };
+
   const getStatusColor = (status: string) => {
     switch (status?.toUpperCase()) {
       case 'DELIVERED': return '#10b981';
@@ -54,8 +103,10 @@ export default function OrdersScreen() {
     }
   };
 
-  const renderOrderItem = ({ item }: { item: any }) => (
-    <View style={styles.orderCard}>
+  const renderOrderItem = ({ item }: { item: any }) => {
+    const isHighlighted = filterId && item.id.toString() === filterId;
+    return (
+    <View style={[styles.orderCard, isHighlighted && styles.highlightedCard]}>
       <View style={styles.cardHeader}>
         <View style={styles.statusBadge}>
           <View style={[styles.statusDot, { backgroundColor: getStatusColor(item.status) }]} />
@@ -63,7 +114,14 @@ export default function OrdersScreen() {
             {item.status || 'PENDING'}
           </Text>
         </View>
-        <Text style={styles.orderDate}>#{item.id}</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+          <Text style={styles.orderDate}>#{item.id}</Text>
+          {(item.status === 'DELIVERED' || item.status === 'DECLINED') && (
+            <TouchableOpacity onPress={() => handleHideOrder(item.id)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+              <Trash2 size={18} color="#94a3b8" />
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
 
       <View style={styles.cardContent}>
@@ -82,29 +140,54 @@ export default function OrdersScreen() {
           </View>
           <View style={styles.detailItem}>
             <DollarSign size={14} color="#94a3b8" />
-            <Text style={styles.detailText}>Total: ${parseFloat(item.total_price || 0).toFixed(2)}</Text>
+            <Text style={styles.detailText}>Total: UGX {parseFloat(item.total_price || 0).toLocaleString()}</Text>
           </View>
         </View>
       </View>
-      
-      <TouchableOpacity 
+
+      <TouchableOpacity
         style={styles.viewDetailBtn}
         onPress={() => Alert.alert(
           `Order #${item.id} Details`,
-          `Medicine: ${item.medicine_name || 'N/A'}\nQuantity: ${item.quantity}\nTotal: $${parseFloat(item.total_price || 0).toFixed(2)}\nStatus: ${item.status || 'PENDING'}\nOrdered on: ${new Date(item.created_at).toLocaleString()}`
+          `Medicine: ${item.medicine_name || 'N/A'}\nQuantity: ${item.quantity}\nTotal: UGX ${parseFloat(item.total_price || 0).toLocaleString()}\nStatus: ${item.status || 'PENDING'}\nOrdered on: ${new Date(item.created_at).toLocaleString()}`
         )}
       >
         <Text style={styles.viewDetailText}>View Details</Text>
         <ChevronRight size={16} color="#033487" />
       </TouchableOpacity>
     </View>
-  );
+    );
+  };
+
+  const hasFinishedOrders = orders.some(o => o.status === 'DELIVERED' || o.status === 'DECLINED');
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>My Orders</Text>
-        <Text style={styles.subtitle}>Track your medication deliveries</Text>
+        <View style={styles.headerTop}>
+          <View>
+            <Text style={styles.title}>My Orders</Text>
+            <Text style={styles.subtitle}>Track your medication deliveries</Text>
+          </View>
+          {hasFinishedOrders && !filterId && (
+            <TouchableOpacity style={styles.clearBtn} onPress={handleClearHistory}>
+              <Trash2 size={20} color="#ef4444" />
+            </TouchableOpacity>
+          )}
+          {filterId && (
+            <TouchableOpacity 
+              style={[styles.clearBtn, { backgroundColor: '#eff6ff' }]} 
+              onPress={() => router.setParams({ id: '' })}
+            >
+              <XCircle size={20} color="#033487" />
+            </TouchableOpacity>
+          )}
+        </View>
+        {filterId && (
+          <View style={styles.filterBanner}>
+            <Text style={styles.filterText}>Highlighting Order #{filterId}</Text>
+          </View>
+        )}
       </View>
 
       {isLoading ? (
@@ -144,6 +227,11 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     backgroundColor: '#ffffff',
   },
+  headerTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   title: {
     fontSize: 28,
     fontWeight: '800',
@@ -153,6 +241,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#64748b',
     marginTop: 4,
+  },
+  clearBtn: {
+    padding: 10,
+    backgroundColor: '#fef2f2',
+    borderRadius: 12,
   },
   listContent: {
     padding: 20,
@@ -267,5 +360,22 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 8,
     maxWidth: 240,
-  }
+  },
+  highlightedCard: {
+    borderColor: '#033487',
+    borderWidth: 2,
+    backgroundColor: '#f0f9ff',
+  },
+  filterBanner: {
+    backgroundColor: '#eff6ff',
+    padding: 8,
+    borderRadius: 8,
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  filterText: {
+    color: '#033487',
+    fontWeight: '700',
+    fontSize: 12,
+  },
 });

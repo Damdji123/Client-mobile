@@ -6,8 +6,8 @@ import Footer from '../../components/Footer';
 
 export default function ContactScreen() {
   const handleCall = (number: string) => Linking.openURL(`tel:${number}`);
-  const handleWhatsApp = () => Linking.openURL('https://wa.me/256726600416');
-  const handleEmail = () => Linking.openURL('mailto:damdjielyamine30@gmail.com');
+  const handleWhatsApp = () => Linking.openURL('https://wa.me/+2694836476');
+  const handleEmail = () => Linking.openURL('mailto:loutfipharmacy@gmail.com');
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
@@ -22,11 +22,11 @@ export default function ContactScreen() {
         <View style={styles.content}>
           {/* Hero Icon/Image Area */}
           <View style={styles.illustrationContainer}>
-             <View style={styles.circleDecoration} />
-             <Image 
-               source={require('../../assets/images/logo.png')} 
-               style={styles.logoImg}
-             />
+            <View style={styles.circleDecoration} />
+            <Image
+              source={require('../../assets/images/logo.png')}
+              style={styles.logoImg}
+            />
           </View>
 
           <View style={styles.cardsContainer}>
@@ -36,8 +36,8 @@ export default function ContactScreen() {
               </View>
               <View style={styles.cardInfo}>
                 <Text style={styles.cardTitle}>Call Us</Text>
-                <Text style={styles.cardValue}>+256 726 600 416</Text>
-                <Text style={styles.cardSubValue}>+256 704 394 422</Text>
+                <Text style={styles.cardValue}>+269 4836476</Text>
+                <Text style={styles.cardSubValue}>+269 3901515</Text>
               </View>
             </TouchableOpacity>
 
@@ -58,7 +58,7 @@ export default function ContactScreen() {
               </View>
               <View style={styles.cardInfo}>
                 <Text style={styles.cardTitle}>Email</Text>
-                <Text style={styles.cardValue}>damdjielyamine30@gmail.com</Text>
+                <Text style={styles.cardValue}>loutfipharmacy@gmail.com</Text>
                 <Text style={styles.cardHint}>For business inquiries</Text>
               </View>
             </TouchableOpacity>
@@ -69,8 +69,8 @@ export default function ContactScreen() {
               </View>
               <View style={styles.cardInfo}>
                 <Text style={styles.cardTitle}>Location</Text>
-                <Text style={styles.cardValue}>Loutfi Pharmacy Uganda Limited</Text>
-                <Text style={styles.cardHint}>Kampala, Uganda</Text>
+                <Text style={styles.cardValue}>Loutfi Pharmacy Mutsamudu Anjouan</Text>
+                <Text style={styles.cardHint}>Mutsamudu, Anjouan, Comoros</Text>
               </View>
             </View>
           </View>

@@ -18,8 +18,9 @@ function RootLayoutNav() {
     if (isLoading || !customSplashFinished) return;
 
     const inAuthGroup = segments[0] === '(auth)';
+    const isPublicFeedback = segments[0] === 'public_feedback';
 
-    if (!isAuthenticated && !inAuthGroup) {
+    if (!isAuthenticated && !inAuthGroup && !isPublicFeedback) {
       // Redirect to login if not authenticated
       router.replace('/(auth)/login');
     } else if (isAuthenticated && inAuthGroup) {

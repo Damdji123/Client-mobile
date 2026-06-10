@@ -47,7 +47,7 @@ export default function CheckoutScreen() {
   const subtotal = cartItems.reduce((sum: number, item: any) => {
     return sum + (parseFloat(item.medicine_detail?.price || 0) * item.quantity);
   }, 0);
-  const deliveryFee = 5.00;
+  const deliveryFee = 15000;
   const total = subtotal + deliveryFee;
 
   const handleCheckout = async () => {
@@ -126,7 +126,7 @@ export default function CheckoutScreen() {
             <CheckCircle color="#10B981" size={32} />
             <View style={styles.totalInfo}>
               <Text style={styles.totalLabel}>Total Amount to Pay</Text>
-              <Text style={styles.totalValue}>${total.toFixed(2)}</Text>
+              <Text style={styles.totalValue}>UGX {total.toLocaleString()}</Text>
             </View>
           </View>
 
@@ -196,7 +196,7 @@ export default function CheckoutScreen() {
               <View style={styles.instructionSteps}>
                 <Text style={styles.stepText}>1. Dial <Text style={styles.bold}>{paymentMethod === 'MTN' ? '*165*3#' : '*185*9#'}</Text> on your phone</Text>
                 <Text style={styles.stepText}>2. Enter {paymentMethod === 'MTN' ? 'Merchant ID' : 'Business Number'}: <Text style={styles.primaryText}>[MERCHANT_ID]</Text></Text>
-                <Text style={styles.stepText}>3. Enter Amount: <Text style={styles.bold}>${total.toFixed(2)}</Text></Text>
+                <Text style={styles.stepText}>3. Enter Amount: <Text style={styles.bold}>UGX {total.toLocaleString()}</Text></Text>
                 <Text style={styles.stepText}>4. Enter your PIN to confirm</Text>
               </View>
 
@@ -223,7 +223,7 @@ export default function CheckoutScreen() {
               <ActivityIndicator color="#ffffff" />
             ) : (
               <Text style={styles.submitBtnText}>
-                {paymentMethod === 'CASH' ? 'Place Order & Pay Cash' : `I have paid $${total.toFixed(2)}`}
+                {paymentMethod === 'CASH' ? 'Place Order & Pay Cash' : `I have paid UGX ${total.toLocaleString()}`}
               </Text>
             )}
           </TouchableOpacity>

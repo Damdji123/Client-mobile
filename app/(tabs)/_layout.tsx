@@ -1,12 +1,43 @@
 import React from 'react';
 import { Drawer } from 'expo-router/drawer';
-import { ShoppingCart, Pill, LayoutDashboard, User, ShoppingBag, Info, PhoneCall } from 'lucide-react-native';
+import { ShoppingCart, Pill, LayoutDashboard, User, ShoppingBag, Info, PhoneCall, MessageSquare, Bell } from 'lucide-react-native';
+import api from '../../services/api';
+import { usePathname } from 'expo-router';
 import { View, Text, StyleSheet } from 'react-native';
+import { AuthProvider, useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 import CustomDrawerContent from '../../components/CustomDrawerContent';
 
 export default function DrawerLayout() {
   const { cartCount } = useCart();
+  const { isAuthenticated } = useAuth(); // Import useAuth
+  const [unreadCount, setUnreadCount] = React.useState(0);
+  const pathname = usePathname();
+
+  const fetchUnreadCount = async () => {
+    if (!isAuthenticated) return;
+    try {
+      const res = await api.get('notifications/unread_counts/');
+      setUnreadCount(res.data.TOTAL);
+    } catch (err) {}
+  };
+
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      fetchUnreadCount();
+    }
+  }, [pathname, isAuthenticated]);
+
+  React.useEffect(() => {
+    let interval: any;
+    if (isAuthenticated) {
+      fetchUnreadCount();
+      interval = setInterval(fetchUnreadCount, 30000);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isAuthenticated]);
 
   return (
     <Drawer
@@ -51,6 +82,7 @@ export default function DrawerLayout() {
       <Drawer.Screen
         name="cart"
         options={{
+          drawerItemStyle: { display: isAuthenticated ? 'flex' : 'none' },
           title: 'Shopping Cart',
           drawerLabel: 'My Cart',
           drawerIcon: ({ color, size }) => (
@@ -68,6 +100,7 @@ export default function DrawerLayout() {
       <Drawer.Screen
         name="profile"
         options={{
+          drawerItemStyle: { display: isAuthenticated ? 'flex' : 'none' },
           title: 'My Profile',
           drawerLabel: 'Profile Settings',
           drawerIcon: ({ color, size }) => <User size={size} color={color} />,
@@ -76,6 +109,7 @@ export default function DrawerLayout() {
       <Drawer.Screen
         name="orders"
         options={{
+          drawerItemStyle: { display: isAuthenticated ? 'flex' : 'none' },
           title: 'Order History',
           drawerLabel: 'My Orders',
           drawerIcon: ({ color, size }) => <ShoppingBag size={size} color={color} />,
@@ -107,8 +141,27 @@ export default function DrawerLayout() {
       <Drawer.Screen
         name="feedback"
         options={{
-          drawerItemStyle: { display: 'none' },
-          title: 'Submit Feedback'
+          title: 'Feedback',
+          drawerLabel: 'Feedback',
+          drawerIcon: ({ color, size }) => <MessageSquare size={size} color={color} />,
+        }}
+      />
+      <Drawer.Screen
+        name="notifications"
+        options={{
+          drawerItemStyle: { display: isAuthenticated ? 'flex' : 'none' },
+          title: 'My Notifications',
+          drawerLabel: 'Notifications',
+          drawerIcon: ({ color, size }) => (
+            <View style={{ width: size, height: size }}>
+              <Bell size={size} color={color} />
+              {unreadCount > 0 && (
+                <View style={styles.badge}>
+                  <Text style={styles.badgeText}>{unreadCount}</Text>
+                </View>
+              )}
+            </View>
+          ),
         }}
       />
     </Drawer>

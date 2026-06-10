@@ -19,9 +19,9 @@ export default function Footer() {
       {/* Top Banner Strip */}
       <View style={styles.bannerStrip}>
         <View style={styles.bannerLeft}>
-          <Image 
-            source={require('../assets/images/logo.png')} 
-            style={styles.logo} 
+          <Image
+            source={require('../assets/images/logo.png')}
+            style={styles.logo}
           />
           <Text style={styles.bannerText}>
             Loutfi <Text style={styles.bannerSpan}>Pharmacy</Text>
@@ -56,8 +56,8 @@ export default function Footer() {
 
           {/* Social/Numbers Column */}
           <View style={[styles.column, styles.alignRight]}>
-            <Text style={styles.contactPoint}>Call us: +256 726 600 416</Text>
-            <Text style={styles.contactPoint}>Or: +256 704 394 422</Text>
+            <Text style={styles.contactPoint}>Call us: +269 483593576</Text>
+            <Text style={styles.contactPoint}>Or: +269 3901515</Text>
 
             <View style={styles.socialRow}>
               <Text style={styles.socialLabel}>Chat with Us:</Text>
@@ -79,7 +79,7 @@ export default function Footer() {
 
         {/* Bottom Copyright */}
         <Text style={styles.copyrightText}>
-          Copyright by Loutfi Pharmacy Uganda Limited {new Date().getFullYear()}. All rights reserved.
+          Copyright by Loutfi Pharmacy Mutsamudu Anjouan Comoros {new Date().getFullYear()}. All rights reserved.
         </Text>
       </View>
     </View>
