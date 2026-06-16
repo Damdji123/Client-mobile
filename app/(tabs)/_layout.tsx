@@ -66,16 +66,16 @@ export default function DrawerLayout() {
       <Drawer.Screen
         name="index"
         options={{
-          title: 'Loutfi Pharmacy',
-          drawerLabel: 'Home',
+          title: 'Pharmacie Loutfi',
+          drawerLabel: 'Accueil',
           drawerIcon: ({ color, size }) => <LayoutDashboard size={size} color={color} />,
         }}
       />
       <Drawer.Screen
         name="catalog"
         options={{
-          title: 'Catalog',
-          drawerLabel: 'Medicines',
+          title: 'Catalogue',
+          drawerLabel: 'Médicaments',
           drawerIcon: ({ color, size }) => <Pill size={size} color={color} />,
         }}
       />
@@ -83,8 +83,8 @@ export default function DrawerLayout() {
         name="cart"
         options={{
           drawerItemStyle: { display: isAuthenticated ? 'flex' : 'none' },
-          title: 'Shopping Cart',
-          drawerLabel: 'My Cart',
+          title: 'Panier',
+          drawerLabel: 'Mon panier',
           drawerIcon: ({ color, size }) => (
             <View style={{ width: size, height: size }}>
               <ShoppingCart size={size} color={color} />
@@ -101,8 +101,8 @@ export default function DrawerLayout() {
         name="profile"
         options={{
           drawerItemStyle: { display: isAuthenticated ? 'flex' : 'none' },
-          title: 'My Profile',
-          drawerLabel: 'Profile Settings',
+          title: 'Mon profil',
+          drawerLabel: 'Paramètres du profil',
           drawerIcon: ({ color, size }) => <User size={size} color={color} />,
         }}
       />
@@ -110,24 +110,24 @@ export default function DrawerLayout() {
         name="orders"
         options={{
           drawerItemStyle: { display: isAuthenticated ? 'flex' : 'none' },
-          title: 'Order History',
-          drawerLabel: 'My Orders',
+          title: 'Historique des commandes',
+          drawerLabel: 'Mes commandes',
           drawerIcon: ({ color, size }) => <ShoppingBag size={size} color={color} />,
         }}
       />
       <Drawer.Screen
         name="about"
         options={{
-          title: 'About Us',
-          drawerLabel: 'About Us',
+          title: 'À propos de nous',
+          drawerLabel: 'À propos de nous',
           drawerIcon: ({ color, size }) => <Info size={size} color={color} />,
         }}
       />
       <Drawer.Screen
         name="contact"
         options={{
-          title: 'Contact Support',
-          drawerLabel: 'Contact Support',
+          title: 'Contacter le support',
+          drawerLabel: 'Contacter le support',
           drawerIcon: ({ color, size }) => <PhoneCall size={size} color={color} />,
         }}
       />
@@ -135,14 +135,14 @@ export default function DrawerLayout() {
         name="checkout"
         options={{
           drawerItemStyle: { display: 'none' },
-          title: 'Secure Checkout'
+          title: 'Paiement sécurisé'
         }}
       />
       <Drawer.Screen
         name="feedback"
         options={{
-          title: 'Feedback',
-          drawerLabel: 'Feedback',
+          title: 'Commentaires',
+          drawerLabel: 'Commentaires',
           drawerIcon: ({ color, size }) => <MessageSquare size={size} color={color} />,
         }}
       />
@@ -150,7 +150,7 @@ export default function DrawerLayout() {
         name="notifications"
         options={{
           drawerItemStyle: { display: isAuthenticated ? 'flex' : 'none' },
-          title: 'My Notifications',
+          title: 'Mes notifications',
           drawerLabel: 'Notifications',
           drawerIcon: ({ color, size }) => (
             <View style={{ width: size, height: size }}>

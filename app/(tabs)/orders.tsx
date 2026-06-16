@@ -23,6 +23,16 @@ export default function OrdersScreen() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const params = useLocalSearchParams();
   const filterId = params.id;
+  const getStatusLabel = (status: string) => {
+    switch (status?.toUpperCase()) {
+      case 'DELIVERED': return 'Livrée';
+      case 'PENDING': return 'En attente';
+      case 'SHIPPED': return 'Expédiée';
+      case 'DECLINED': return 'Déclinée';
+      default: return 'En attente';
+    }
+  };
+
   const router = useRouter();
 
   const fetchOrders = async () => {
@@ -51,19 +61,19 @@ export default function OrdersScreen() {
 
   const handleHideOrder = (id: number) => {
     Alert.alert(
-      "Delete Order",
-      "Are you sure you want to delete this order from your history?",
+      "Supprimer la commande",
+      "Êtes-vous sûr de vouloir supprimer cette commande de votre historique ?",
       [
-        { text: "Cancel", style: "cancel" },
+        { text: "Annuler", style: "cancel" },
         {
-          text: "Delete",
+          text: "Supprimer",
           style: "destructive",
           onPress: async () => {
             try {
               await api.post(`orders/${id}/delete_order_client/`);
               fetchOrders();
             } catch (err) {
-              Alert.alert("Error", "Failed to delete order.");
+              Alert.alert("Erreur", "Impossible de supprimer la commande.");
             }
           }
         }
@@ -73,19 +83,19 @@ export default function OrdersScreen() {
 
   const handleClearHistory = () => {
     Alert.alert(
-      "Clear History",
-      "Are you sure you want to clear all finished order history (Delivered/Declined)?",
+      "Effacer l'historique",
+      "Êtes-vous sûr de vouloir effacer tout l'historique des commandes terminées (Livrées/Déclinées) ?",
       [
-        { text: "Cancel", style: "cancel" },
+        { text: "Annuler", style: "cancel" },
         {
-          text: "Clear All",
+          text: "Tout effacer",
           style: "destructive",
           onPress: async () => {
             try {
               await api.post('orders/clear_history/');
               fetchOrders();
             } catch (err) {
-              Alert.alert("Error", "Failed to clear history.");
+              Alert.alert("Erreur", "Impossible d'effacer l'historique.");
             }
           }
         }
@@ -111,7 +121,7 @@ export default function OrdersScreen() {
         <View style={styles.statusBadge}>
           <View style={[styles.statusDot, { backgroundColor: getStatusColor(item.status) }]} />
           <Text style={[styles.statusText, { color: getStatusColor(item.status) }]}>
-            {item.status || 'PENDING'}
+            {getStatusLabel(item.status)}
           </Text>
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
@@ -127,7 +137,7 @@ export default function OrdersScreen() {
       <View style={styles.cardContent}>
         <View style={styles.itemRow}>
           <Package size={20} color="#033487" />
-          <Text style={styles.itemName}>{item.medicine_name || 'Medical Supplies'}</Text>
+          <Text style={styles.itemName}>{item.medicine_name || 'Fournitures médicales'}</Text>
           <Text style={styles.itemQty}>x{item.quantity}</Text>
         </View>
 
@@ -140,7 +150,7 @@ export default function OrdersScreen() {
           </View>
           <View style={styles.detailItem}>
             <DollarSign size={14} color="#94a3b8" />
-            <Text style={styles.detailText}>Total: UGX {parseFloat(item.total_price || 0).toLocaleString()}</Text>
+            <Text style={styles.detailText}>Total : UGX {parseFloat(item.total_price || 0).toLocaleString()}</Text>
           </View>
         </View>
       </View>
@@ -148,11 +158,11 @@ export default function OrdersScreen() {
       <TouchableOpacity
         style={styles.viewDetailBtn}
         onPress={() => Alert.alert(
-          `Order #${item.id} Details`,
-          `Medicine: ${item.medicine_name || 'N/A'}\nQuantity: ${item.quantity}\nTotal: UGX ${parseFloat(item.total_price || 0).toLocaleString()}\nStatus: ${item.status || 'PENDING'}\nOrdered on: ${new Date(item.created_at).toLocaleString()}`
+          `Détails de la commande #${item.id}`,
+          `Médicament : ${item.medicine_name || 'N/A'}\nQuantité : ${item.quantity}\nTotal : UGX ${parseFloat(item.total_price || 0).toLocaleString()}\nStatut : ${getStatusLabel(item.status)}\nCommandé le : ${new Date(item.created_at).toLocaleString()}`
         )}
       >
-        <Text style={styles.viewDetailText}>View Details</Text>
+        <Text style={styles.viewDetailText}>Voir les détails</Text>
         <ChevronRight size={16} color="#033487" />
       </TouchableOpacity>
     </View>
@@ -166,8 +176,8 @@ export default function OrdersScreen() {
       <View style={styles.header}>
         <View style={styles.headerTop}>
           <View>
-            <Text style={styles.title}>My Orders</Text>
-            <Text style={styles.subtitle}>Track your medication deliveries</Text>
+            <Text style={styles.title}>Mes commandes</Text>
+            <Text style={styles.subtitle}>Suivez les livraisons de vos médicaments</Text>
           </View>
           {hasFinishedOrders && !filterId && (
             <TouchableOpacity style={styles.clearBtn} onPress={handleClearHistory}>
@@ -185,7 +195,7 @@ export default function OrdersScreen() {
         </View>
         {filterId && (
           <View style={styles.filterBanner}>
-            <Text style={styles.filterText}>Highlighting Order #{filterId}</Text>
+            <Text style={styles.filterText}>Mise en valeur de la commande #${filterId}</Text>
           </View>
         )}
       </View>
@@ -207,8 +217,8 @@ export default function OrdersScreen() {
           ListEmptyComponent={
             <View style={styles.centerContainer}>
               <Clock size={48} color="#cbd5e1" strokeWidth={1.5} />
-              <Text style={styles.emptyTitle}>No Orders Yet</Text>
-              <Text style={styles.emptySubtitle}>Your medical order history will appear here.</Text>
+              <Text style={styles.emptyTitle}>Aucune commande pour le moment</Text>
+              <Text style={styles.emptySubtitle}>L'historique de vos commandes médicales apparaîtra ici.</Text>
             </View>
           }
         />

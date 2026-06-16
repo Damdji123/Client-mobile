@@ -55,12 +55,12 @@ export default function CartScreen() {
 
   const removeItem = async (id: number) => {
     Alert.alert(
-      "Remove Item",
-      "Are you sure you want to remove this item from your cart?",
+      "Supprimer l'article",
+      "Êtes-vous sûr de vouloir supprimer cet article de votre panier ?",
       [
-        { text: "Cancel", style: "cancel" },
+        { text: "Annuler", style: "cancel" },
         { 
-          text: "Remove", 
+          text: "Supprimer", 
           style: "destructive",
           onPress: async () => {
             try {
@@ -86,8 +86,8 @@ export default function CartScreen() {
   const renderCartItem = ({ item }: { item: any }) => (
     <View style={styles.cartCard}>
       <View style={styles.itemInfo}>
-        <Text style={styles.itemName}>{item.medicine_detail?.name || 'Unknown Item'}</Text>
-        <Text style={styles.itemPrice}>UGX {parseFloat(item.medicine_detail?.price || 0).toLocaleString()} / unit</Text>
+        <Text style={styles.itemName}>{item.medicine_detail?.name || 'Article inconnu'}</Text>
+        <Text style={styles.itemPrice}>UGX {parseFloat(item.medicine_detail?.price || 0).toLocaleString()} / unité</Text>
       </View>
       
       <View style={styles.controls}>
@@ -125,8 +125,8 @@ export default function CartScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Shopping Cart</Text>
-        <Text style={styles.subtitle}>{cartItems.length} items in your basket</Text>
+        <Text style={styles.title}>Panier</Text>
+        <Text style={styles.subtitle}>{cartItems.length} {cartItems.length === 1 ? 'article' : 'articles'} dans votre panier</Text>
       </View>
 
       {cartItems.length === 0 ? (
@@ -134,13 +134,13 @@ export default function CartScreen() {
           <View style={styles.emptyIcon}>
             <ShoppingBag size={64} color="#cbd5e1" />
           </View>
-          <Text style={styles.emptyTitle}>Your cart is empty</Text>
-          <Text style={styles.emptySubtitle}>Looks like you haven't added anything yet.</Text>
+          <Text style={styles.emptyTitle}>Votre panier est vide</Text>
+          <Text style={styles.emptySubtitle}>Il semble que vous n'ayez encore rien ajouté.</Text>
           <TouchableOpacity 
             style={styles.browseBtn}
             onPress={() => router.push('/(tabs)/catalog')}
           >
-            <Text style={styles.browseBtnText}>Browse Catalog</Text>
+            <Text style={styles.browseBtnText}>Parcourir le catalogue</Text>
           </TouchableOpacity>
         </View>
       ) : (
@@ -154,20 +154,20 @@ export default function CartScreen() {
 
           <View style={styles.footer}>
             <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>Subtotal</Text>
+              <Text style={styles.summaryLabel}>Sous-total</Text>
               <Text style={styles.summaryValue}>UGX {subtotal.toLocaleString()}</Text>
             </View>
             <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>Delivery Fee</Text>
+              <Text style={styles.summaryLabel}>Frais de livraison</Text>
               <Text style={styles.summaryValue}>UGX {deliveryFee.toLocaleString()}</Text>
             </View>
             <View style={[styles.summaryRow, styles.totalRow]}>
-              <Text style={styles.totalLabel}>Total Amount</Text>
+              <Text style={styles.totalLabel}>Montant total</Text>
               <Text style={styles.totalValue}>UGX {total.toLocaleString()}</Text>
             </View>
 
             <TouchableOpacity style={styles.checkoutBtn} onPress={() => router.push('/(tabs)/checkout')}>
-              <Text style={styles.checkoutBtnText}>Proceed to Checkout</Text>
+              <Text style={styles.checkoutBtnText}>Passer à la caisse</Text>
               <ArrowRight size={20} color="#ffffff" />
             </TouchableOpacity>
           </View>

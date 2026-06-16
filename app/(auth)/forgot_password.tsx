@@ -29,7 +29,7 @@ export default function ForgotPasswordScreen() {
 
   const handleRequestOTP = async () => {
     if (!email) {
-      Alert.alert('Error', 'Please enter your registered email address.');
+      Alert.alert('Erreur', 'Veuillez saisir votre adresse e-mail enregistrée.');
       return;
     }
     
@@ -37,10 +37,10 @@ export default function ForgotPasswordScreen() {
     try {
       await api.post('users/password-reset/', { email });
       setStep(2);
-      Alert.alert('Success', 'A verification code has been sent to your email.');
+      Alert.alert('Succès', 'Un code de vérification a été envoyé à votre adresse e-mail.');
     } catch (err: any) {
-      const msg = err.response?.data?.error || 'Failed to send code. Please try again.';
-      Alert.alert('Error', msg);
+      const msg = err.response?.data?.error || 'Échec de l\'envoi du code. Veuillez réessayer.';
+      Alert.alert('Erreur', msg);
     } finally {
       setIsLoading(false);
     }
@@ -48,11 +48,11 @@ export default function ForgotPasswordScreen() {
 
   const handleResetPassword = async () => {
     if (!otp || !newPassword || !confirmPassword) {
-      Alert.alert('Error', 'Please fill in all fields.');
+      Alert.alert('Erreur', 'Veuillez remplir tous les champs.');
       return;
     }
     if (newPassword !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match.');
+      Alert.alert('Erreur', 'Les mots de passe ne correspondent pas.');
       return;
     }
 
@@ -65,8 +65,8 @@ export default function ForgotPasswordScreen() {
       });
       setStep(3);
     } catch (err: any) {
-      const msg = err.response?.data?.error || 'Invalid code or request failed.';
-      Alert.alert('Error', msg);
+      const msg = err.response?.data?.error || 'Code invalide ou échec de la requête.';
+      Alert.alert('Erreur', msg);
     } finally {
       setIsLoading(false);
     }
@@ -81,7 +81,7 @@ export default function ForgotPasswordScreen() {
         <View style={styles.header}>
           {step < 3 && (
             <TouchableOpacity onPress={() => step === 1 ? router.back() : setStep(1)} style={styles.backButton}>
-              <Text style={styles.backButtonText}>← Back</Text>
+              <Text style={styles.backButtonText}>← Retour</Text>
             </TouchableOpacity>
           )}
           <View style={styles.logoContainer}>
@@ -91,12 +91,12 @@ export default function ForgotPasswordScreen() {
             />
           </View>
           <Text style={styles.title}>
-            {step === 1 ? 'Forgot Password?' : step === 2 ? 'Verify Identity' : 'Success!'}
+            {step === 1 ? 'Mot de passe oublié ?' : step === 2 ? 'Vérifier l\'identité' : 'Succès !'}
           </Text>
           <Text style={styles.subtitle}>
-            {step === 1 ? "No worries, we'll send you recovery instructions." : 
-             step === 2 ? `Enter the 6-digit code sent to ${email}` : 
-             "Your password has been successfully updated."}
+            {step === 1 ? "Pas de soucis, nous vous enverrons des instructions de récupération." : 
+             step === 2 ? `Entrez le code à 6 chiffres envoyé à ${email}` : 
+             "Votre mot de passe a été mis à jour avec succès."}
           </Text>
         </View>
 
@@ -104,7 +104,7 @@ export default function ForgotPasswordScreen() {
           {step === 1 && (
             <>
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>Registered Email</Text>
+                <Text style={styles.label}>Adresse e-mail enregistrée</Text>
                 <TextInput
                   style={styles.input}
                   placeholder="john@example.com"
@@ -124,14 +124,14 @@ export default function ForgotPasswordScreen() {
                 {isLoading ? (
                   <ActivityIndicator color="#ffffff" />
                 ) : (
-                  <Text style={styles.actionButtonText}>Send Verification Code</Text>
+                  <Text style={styles.actionButtonText}>Envoyer le code de vérification</Text>
                 )}
               </TouchableOpacity>
 
               <View style={styles.loginLink}>
-                <Text style={styles.loginText}>Remember your password? </Text>
+                <Text style={styles.loginText}>Vous vous souvenez de votre mot de passe ? </Text>
                 <TouchableOpacity onPress={() => router.push('/(auth)/login')}>
-                  <Text style={styles.loginLinkText}>Login here</Text>
+                  <Text style={styles.loginLinkText}>Se connecter ici</Text>
                 </TouchableOpacity>
               </View>
             </>
@@ -140,7 +140,7 @@ export default function ForgotPasswordScreen() {
           {step === 2 && (
             <>
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>6-Digit Code</Text>
+                <Text style={styles.label}>Code à 6 chiffres</Text>
                 <TextInput
                   style={[styles.input, styles.otpInput]}
                   placeholder="123456"
@@ -153,7 +153,7 @@ export default function ForgotPasswordScreen() {
               </View>
 
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>New Password</Text>
+                <Text style={styles.label}>Nouveau mot de passe</Text>
                 <View style={styles.passwordContainer}>
                   <TextInput
                     style={[styles.input, { paddingRight: 50 }]}
@@ -173,7 +173,7 @@ export default function ForgotPasswordScreen() {
               </View>
 
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>Confirm Password</Text>
+                <Text style={styles.label}>Confirmer le mot de passe</Text>
                 <TextInput
                   style={styles.input}
                   placeholder="••••••••"
@@ -192,7 +192,7 @@ export default function ForgotPasswordScreen() {
                 {isLoading ? (
                   <ActivityIndicator color="#ffffff" />
                 ) : (
-                  <Text style={styles.actionButtonText}>Reset Password</Text>
+                  <Text style={styles.actionButtonText}>Réinitialiser le mot de passe</Text>
                 )}
               </TouchableOpacity>
             </>
@@ -204,7 +204,7 @@ export default function ForgotPasswordScreen() {
                 style={styles.actionButton}
                 onPress={() => router.replace('/(auth)/login')}
               >
-                <Text style={styles.actionButtonText}>Login with New Password</Text>
+                <Text style={styles.actionButtonText}>Se connecter avec le nouveau mot de passe</Text>
               </TouchableOpacity>
             </>
           )}

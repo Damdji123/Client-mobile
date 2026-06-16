@@ -10,11 +10,11 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
 
   const handleLogout = () => {
     Alert.alert(
-      "Sign Out",
-      "Are you sure you want to log out?",
+      "Déconnexion",
+      "Êtes-vous sûr de vouloir vous déconnecter ?",
       [
-        { text: "Cancel", style: "cancel" },
-        { text: "Log Out", style: "destructive", onPress: logout }
+        { text: "Annuler", style: "cancel" },
+        { text: "Se déconnecter", style: "destructive", onPress: logout }
       ]
     );
   };
@@ -37,8 +37,8 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
             )}
           </View>
           <View style={styles.userInfo}>
-            <Text style={styles.userName}>{user?.first_name || 'Customer'}</Text>
-            <Text style={styles.userEmail}>{user?.email || 'Guest'}</Text>
+            <Text style={styles.userName}>{user?.first_name || 'Client'}</Text>
+            <Text style={styles.userEmail}>{user?.email || 'Invité'}</Text>
           </View>
         </View>
 
@@ -51,14 +51,14 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
 
         {/* Additional Links */}
         <View style={styles.additionalItems}>
-          <Text style={styles.sectionTitle}>Information</Text>
+          <Text style={styles.sectionTitle}>Informations</Text>
           
           <TouchableOpacity 
             style={styles.extraItem}
             onPress={() => props.navigation.navigate('about')}
           >
             <Info size={20} color="#64748b" />
-            <Text style={styles.extraLabel}>About Us</Text>
+            <Text style={styles.extraLabel}>À propos de nous</Text>
           </TouchableOpacity>
 
           <TouchableOpacity 
@@ -66,7 +66,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
             onPress={() => props.navigation.navigate('contact')}
           >
             <PhoneCall size={20} color="#64748b" />
-            <Text style={styles.extraLabel}>Contact Support</Text>
+            <Text style={styles.extraLabel}>Contacter le support</Text>
           </TouchableOpacity>
         </View>
       </DrawerContentScrollView>
@@ -75,9 +75,9 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
       <View style={styles.footer}>
         <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout}>
           <LogOut size={20} color="#ef4444" />
-          <Text style={styles.logoutText}>Sign Out</Text>
+          <Text style={styles.logoutText}>Se déconnecter</Text>
         </TouchableOpacity>
-        <Text style={styles.versionText}>Loutfi Pharmacy v1.0.0</Text>
+        <Text style={styles.versionText}>Pharmacie Loutfi v1.0.0</Text>
       </View>
     </View>
   );

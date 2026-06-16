@@ -24,10 +24,10 @@ export default function Footer() {
             style={styles.logo}
           />
           <Text style={styles.bannerText}>
-            Loutfi <Text style={styles.bannerSpan}>Pharmacy</Text>
+            Pharmacie <Text style={styles.bannerSpan}>Loutfi</Text>
           </Text>
         </View>
-        <Text style={styles.bannerRight}>YOUR HEALTH <Text style={styles.boldText}>FIRST</Text></Text>
+        <Text style={styles.bannerRight}>VOTRE SANTÉ <Text style={styles.boldText}>D'ABORD</Text></Text>
       </View>
 
       {/* Main Footer Content */}
@@ -36,38 +36,38 @@ export default function Footer() {
           {/* Links Column */}
           <View style={styles.column}>
             <TouchableOpacity onPress={() => router.push('/(tabs)/about')}>
-              <Text style={styles.footerLink}>About Us</Text>
+              <Text style={styles.footerLink}>À propos de nous</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => router.push('/(tabs)/contact')}>
               <Text style={styles.footerLink}>Contact</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => router.push('/(tabs)/feedback')}>
-              <Text style={styles.footerLink}>Feedback</Text>
+              <Text style={styles.footerLink}>Commentaires</Text>
             </TouchableOpacity>
 
             <View style={styles.careSection}>
-              <Text style={styles.careTitle}>Customer care line</Text>
+              <Text style={styles.careTitle}>Service client</Text>
               <Text style={styles.careText}>
-                Our Customer care line is happy to take your call, inquiries and complaints.
+                Notre service client est ravi de recevoir vos appels, demandes et réclamations.
               </Text>
-              <Text style={styles.careText}>Available 7am – 10pm, 7 days.</Text>
+              <Text style={styles.careText}>Disponible de 7h à 22h, 7j/7.</Text>
             </View>
           </View>
 
           {/* Social/Numbers Column */}
           <View style={[styles.column, styles.alignRight]}>
-            <Text style={styles.contactPoint}>Call us: +269 483593576</Text>
-            <Text style={styles.contactPoint}>Or: +269 3901515</Text>
+            <Text style={styles.contactPoint}>Appelez-nous : +269 483593576</Text>
+            <Text style={styles.contactPoint}>Ou : +269 3901515</Text>
 
             <View style={styles.socialRow}>
-              <Text style={styles.socialLabel}>Chat with Us:</Text>
+              <Text style={styles.socialLabel}>Discutez avec nous :</Text>
               <TouchableOpacity onPress={handleWhatsApp} style={styles.socialIcon}>
                 <MessageCircle color="#25D366" size={24} />
               </TouchableOpacity>
             </View>
 
             <View style={styles.socialRow}>
-              <Text style={styles.socialLabel}>Or Email:</Text>
+              <Text style={styles.socialLabel}>Ou par e-mail :</Text>
               <TouchableOpacity onPress={handleEmail} style={styles.socialIcon}>
                 <Mail color="#EA4335" size={24} />
               </TouchableOpacity>
@@ -79,7 +79,7 @@ export default function Footer() {
 
         {/* Bottom Copyright */}
         <Text style={styles.copyrightText}>
-          Copyright by Loutfi Pharmacy Mutsamudu Anjouan Comoros {new Date().getFullYear()}. All rights reserved.
+          Copyright par la Pharmacie Loutfi Mutsamudu Anjouan Comores {new Date().getFullYear()}. Tous droits réservés.
         </Text>
       </View>
     </View>

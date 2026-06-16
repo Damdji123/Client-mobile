@@ -47,7 +47,7 @@ export default function CustomSplashScreen({ onAnimationFinish }: CustomSplashSc
     <View style={styles.container}>
       <Animated.View style={[styles.content, { opacity: fadeAnim, transform: [{ scale: scaleAnim }] }]}>
         {/* Welcome Text */}
-        <Text style={styles.welcomeText}>WELCOME TO</Text>
+        <Text style={styles.welcomeText}>BIENVENUE À LA</Text>
         
         {/* Rounded Logo Container */}
         <View style={styles.logoContainer}>
@@ -58,12 +58,12 @@ export default function CustomSplashScreen({ onAnimationFinish }: CustomSplashSc
           />
         </View>
 
-        <Text style={styles.title}>Loutfi Pharmacy</Text>
-        <Text style={styles.subtitle}>Your Health, Our Priority</Text>
+        <Text style={styles.title}>Pharmacie Loutfi</Text>
+        <Text style={styles.subtitle}>Votre santé, notre priorité</Text>
 
         <View style={styles.footer}>
           <ActivityIndicator size="large" color="#10B981" />
-          <Text style={styles.loadingText}>Initializing Pharmacy Services...</Text>
+          <Text style={styles.loadingText}>Initialisation des services de la pharmacie...</Text>
         </View>
       </Animated.View>
     </View>

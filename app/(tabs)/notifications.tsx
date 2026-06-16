@@ -49,7 +49,7 @@ export default function NotificationsScreen() {
       await api.post('notifications/mark_as_read/');
       fetchNotifications();
     } catch (err) {
-      Alert.alert("Error", "Failed to mark notifications as read.");
+      Alert.alert("Erreur", "Impossible de marquer les notifications comme lues.");
     }
   };
 
@@ -58,25 +58,25 @@ export default function NotificationsScreen() {
       await api.delete(`notifications/${id}/`);
       setNotifications(prev => prev.filter(n => n.id !== id));
     } catch (err) {
-      Alert.alert("Error", "Failed to delete notification.");
+      Alert.alert("Erreur", "Impossible de supprimer la notification.");
     }
   };
 
   const clearAllNotifications = async () => {
     Alert.alert(
-      "Clear All",
-      "Are you sure you want to delete all notifications?",
+      "Tout effacer",
+      "Êtes-vous sûr de vouloir supprimer toutes les notifications ?",
       [
-        { text: "Cancel", style: "cancel" },
+        { text: "Annuler", style: "cancel" },
         { 
-          text: "Clear All", 
+          text: "Tout effacer", 
           style: "destructive",
           onPress: async () => {
             try {
               await api.delete('notifications/clear_all/');
               setNotifications([]);
             } catch (err) {
-              Alert.alert("Error", "Failed to clear notifications.");
+              Alert.alert("Erreur", "Impossible d'effacer les notifications.");
             }
           }
         }
@@ -117,7 +117,7 @@ export default function NotificationsScreen() {
       
       <View style={styles.cardBody}>
         <View style={styles.cardHeader}>
-          <Text style={styles.typeText}>{item.notification_type === 'OTHER' ? 'Order Update' : item.notification_type}</Text>
+          <Text style={styles.typeText}>{item.notification_type === 'OTHER' ? 'Mise à jour commande' : item.notification_type === 'ORDER' ? 'Commande' : item.notification_type}</Text>
           <View style={styles.timeBox}>
              <Clock size={12} color="#94a3b8" />
              <Text style={styles.timeText}>{new Date(item.created_at).toLocaleDateString()}</Text>
@@ -141,7 +141,7 @@ export default function NotificationsScreen() {
         <View style={styles.headerTop}>
           <View>
             <Text style={styles.title}>Notifications</Text>
-            <Text style={styles.subtitle}>Updates on your medical orders</Text>
+            <Text style={styles.subtitle}>Mises à jour sur vos commandes médicales</Text>
           </View>
           <View style={styles.headerActions}>
             {notifications.some(n => !n.is_read) && (
@@ -175,8 +175,8 @@ export default function NotificationsScreen() {
           ListEmptyComponent={
             <View style={styles.centerContainer}>
               <Bell size={48} color="#cbd5e1" strokeWidth={1.5} />
-              <Text style={styles.emptyTitle}>All caught up!</Text>
-              <Text style={styles.emptySubtitle}>You have no new notifications at the moment.</Text>
+              <Text style={styles.emptyTitle}>Vous êtes à jour !</Text>
+              <Text style={styles.emptySubtitle}>Vous n'avez pas de nouvelles notifications pour le moment.</Text>
             </View>
           }
         />

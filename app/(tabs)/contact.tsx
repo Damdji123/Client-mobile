@@ -13,9 +13,9 @@ export default function ContactScreen() {
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.headerSection}>
-          <Text style={styles.pageTitle}>Get In Touch</Text>
+          <Text style={styles.pageTitle}>Contactez-nous</Text>
           <Text style={styles.subtitle}>
-            We are here to assist with all your medical inquiries and delivery updates.
+            Nous sommes là pour vous aider avec toutes vos demandes médicales et les mises à jour de livraison.
           </Text>
         </View>
 
@@ -35,7 +35,7 @@ export default function ContactScreen() {
                 <Phone size={24} color="#10b981" />
               </View>
               <View style={styles.cardInfo}>
-                <Text style={styles.cardTitle}>Call Us</Text>
+                <Text style={styles.cardTitle}>Appelez-nous</Text>
                 <Text style={styles.cardValue}>+269 4836476</Text>
                 <Text style={styles.cardSubValue}>+269 3901515</Text>
               </View>
@@ -47,8 +47,8 @@ export default function ContactScreen() {
               </View>
               <View style={styles.cardInfo}>
                 <Text style={styles.cardTitle}>WhatsApp</Text>
-                <Text style={styles.cardValue}>Chat with us instantly</Text>
-                <Text style={styles.cardHint}>Fast replies on prescription requests.</Text>
+                <Text style={styles.cardValue}>Discutez avec nous instantanément</Text>
+                <Text style={styles.cardHint}>Réponses rapides pour les demandes d'ordonnances.</Text>
               </View>
             </TouchableOpacity>
 
@@ -57,9 +57,9 @@ export default function ContactScreen() {
                 <Mail size={24} color="#3b82f6" />
               </View>
               <View style={styles.cardInfo}>
-                <Text style={styles.cardTitle}>Email</Text>
+                <Text style={styles.cardTitle}>E-mail</Text>
                 <Text style={styles.cardValue}>loutfipharmacy@gmail.com</Text>
-                <Text style={styles.cardHint}>For business inquiries</Text>
+                <Text style={styles.cardHint}>Pour les demandes commerciales</Text>
               </View>
             </TouchableOpacity>
 
@@ -68,9 +68,9 @@ export default function ContactScreen() {
                 <MapPin size={24} color="#d946ef" />
               </View>
               <View style={styles.cardInfo}>
-                <Text style={styles.cardTitle}>Location</Text>
-                <Text style={styles.cardValue}>Loutfi Pharmacy Mutsamudu Anjouan</Text>
-                <Text style={styles.cardHint}>Mutsamudu, Anjouan, Comoros</Text>
+                <Text style={styles.cardTitle}>Emplacement</Text>
+                <Text style={styles.cardValue}>Pharmacie Loutfi Mutsamudu Anjouan</Text>
+                <Text style={styles.cardHint}>Mutsamudu, Anjouan, Comores</Text>
               </View>
             </View>
           </View>

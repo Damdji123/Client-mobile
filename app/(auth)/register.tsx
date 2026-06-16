@@ -34,14 +34,14 @@ export default function RegisterScreen() {
     const { name, email, phone, password, confirmPassword } = formData;
 
     if (!name || !email || !phone || !password || !confirmPassword) {
-      Alert.alert('Error', 'Please fill in all required fields');
+      Alert.alert('Erreur', 'Veuillez remplir tous les champs obligatoires');
       return;
     }
 
     if (password !== confirmPassword) {
       // Only clear the password fields, not the rest
       setFormData(prev => ({ ...prev, password: '', confirmPassword: '' }));
-      Alert.alert('Error', 'Passwords do not match. Please re-enter your password.');
+      Alert.alert('Erreur', 'Les mots de passe ne correspondent pas. Veuillez saisir à nouveau votre mot de passe.');
       return;
     }
 
@@ -56,7 +56,7 @@ export default function RegisterScreen() {
         role: 'CLIENT'
       };
       await api.post('users/register/', payload);
-      Alert.alert('Success', 'Registration successful! Please login.', [
+      Alert.alert('Succès', 'Inscription réussie ! Veuillez vous connecter.', [
         { text: 'OK', onPress: () => router.replace('/(auth)/login') }
       ]);
     } catch (err: any) {
@@ -68,8 +68,8 @@ export default function RegisterScreen() {
         || data?.username?.[0]
         || data?.password?.[0]
         || (data ? Object.values(data).flat().join(' ') : null)
-        || (!err.response ? 'Cannot connect to the server.' : 'Registration failed. Please try again.');
-      Alert.alert('Registration Failed', msg);
+        || (!err.response ? 'Impossible de se connecter au serveur.' : 'L\'inscription a échoué. Veuillez réessayer.');
+      Alert.alert('Échec de l\'inscription', msg);
     } finally {
       setIsLoading(false);
     }
@@ -83,7 +83,7 @@ export default function RegisterScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-             <Text style={styles.backButtonText}>← Back</Text>
+             <Text style={styles.backButtonText}>← Retour</Text>
           </TouchableOpacity>
           <View style={styles.logoContainer}>
             <Image 
@@ -91,13 +91,13 @@ export default function RegisterScreen() {
               style={styles.logo}
             />
           </View>
-          <Text style={styles.title}>Create Account</Text>
-          <Text style={styles.subtitle}>Join Loutfi Pharmacy today</Text>
+          <Text style={styles.title}>Créer un compte</Text>
+          <Text style={styles.subtitle}>Rejoignez la Pharmacie Loutfi aujourd'hui</Text>
         </View>
 
         <View style={styles.form}>
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Full Name</Text>
+            <Text style={styles.label}>Nom complet</Text>
             <TextInput
               style={styles.input}
               placeholder="John Doe"
@@ -108,7 +108,7 @@ export default function RegisterScreen() {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Email Address</Text>
+            <Text style={styles.label}>Adresse e-mail</Text>
             <TextInput
               style={styles.input}
               placeholder="john@example.com"
@@ -121,7 +121,7 @@ export default function RegisterScreen() {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Phone Number</Text>
+            <Text style={styles.label}>Numéro de téléphone</Text>
             <TextInput
               style={styles.input}
               placeholder="+1 234 567 890"
@@ -133,7 +133,7 @@ export default function RegisterScreen() {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Password</Text>
+            <Text style={styles.label}>Mot de passe</Text>
             <View style={styles.passwordContainer}>
               <TextInput
                 style={[styles.input, { paddingRight: 50 }]}
@@ -153,7 +153,7 @@ export default function RegisterScreen() {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Confirm Password</Text>
+            <Text style={styles.label}>Confirmer le mot de passe</Text>
             <TextInput
               style={styles.input}
               placeholder="••••••••"
@@ -172,13 +172,13 @@ export default function RegisterScreen() {
             {isLoading ? (
               <ActivityIndicator color="#ffffff" />
             ) : (
-              <Text style={styles.registerButtonText}>Register</Text>
+              <Text style={styles.registerButtonText}>S'inscrire</Text>
             )}
           </TouchableOpacity>
 
           <View style={styles.divider}>
             <View style={styles.dividerLine} />
-            <Text style={styles.dividerText}>OR</Text>
+            <Text style={styles.dividerText}>OU</Text>
             <View style={styles.dividerLine} />
           </View>
 
@@ -195,15 +195,15 @@ export default function RegisterScreen() {
                   source={{ uri: 'https://w7.pngwing.com/pngs/326/85/png-transparent-google-logo-google-text-trademark-logo-thumbnail.png' }}
                   style={styles.googleIcon}
                 />
-                <Text style={styles.googleButtonText}>Continue with Google</Text>
+                <Text style={styles.googleButtonText}>Continuer avec Google</Text>
               </>
             )}
           </TouchableOpacity>
 
           <View style={styles.loginLink}>
-            <Text style={styles.loginText}>Already have an account? </Text>
+            <Text style={styles.loginText}>Vous avez déjà un compte ? </Text>
             <TouchableOpacity onPress={() => router.push('/(auth)/login')}>
-              <Text style={styles.loginLinkText}>Login here</Text>
+              <Text style={styles.loginLinkText}>Se connecter ici</Text>
             </TouchableOpacity>
           </View>
         </View>

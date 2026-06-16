@@ -18,51 +18,51 @@ export default function AboutScreen() {
 
         {/* Content Section */}
         <View style={styles.contentSection}>
-          <Text style={styles.pageTitle}>About Us</Text>
+          <Text style={styles.pageTitle}>À propos de nous</Text>
           <Text style={styles.description}>
-            At Loutfi Pharmacy Comoros, we play a key role in providing quality healthcare.
-            Being legally registered with the regulatory body of pharmacy professionals, and
-            the General Pharmaceutical Council, we pride in our expertise in medical and clinical
-            services.
+            À la Pharmacie Loutfi Comores, nous jouons un rôle clé dans la fourniture de soins de santé de qualité.
+            Légalement enregistrés auprès de l'organisme de réglementation des professionnels de la pharmacie et
+            du Conseil pharmaceutique général, nous sommes fiers de notre expertise dans les services
+            médicaux et cliniques.
           </Text>
           <Text style={styles.description}>
-            To say the least, we exercise our practical knowledge and advise you on
-            common problems such as coughs, colds, aches and pains, as well as healthy eating
-            and living.
+            Pour le moins, nous mettons en pratique nos connaissances et vous conseillons sur
+            les problèmes courants tels que la toux, le rhume, les courbatures et la douleur, ainsi que sur une alimentation
+            et un mode de vie sains.
           </Text>
 
           <View style={styles.valuesCard}>
-            <Text style={styles.subtitle}>MEDICAL EXCELLENCE, COMPASSIONATE CARE</Text>
-            <Text style={styles.mainHeading}>What we stand for?</Text>
+            <Text style={styles.subtitle}>EXCELLENCE MÉDICALE, SOINS COMPATISSANTS</Text>
+            <Text style={styles.mainHeading}>Ce que nous défendons ?</Text>
 
-            <Text style={styles.subHeading}>Our core values</Text>
+            <Text style={styles.subHeading}>Nos valeurs fondamentales</Text>
             <Text style={styles.text}>
-              You can always count on Loutfi Pharmacy's help with all your medical needs.
+              Vous pouvez toujours compter sur l'aide de la Pharmacie Loutfi pour tous vos besoins médicaux.
             </Text>
 
-            <Text style={styles.subHeading}>OUR MISSION</Text>
+            <Text style={styles.subHeading}>NOTRE MISSION</Text>
             <Text style={styles.text}>
-              We provide expert care and innovative solutions in pharmacy and health care that help put people on a path to better health.
+              Nous fournissons des soins d'experts et des solutions innovantes en pharmacie et en soins de santé qui aident les gens à s'engager sur la voie d'une meilleure santé.
             </Text>
 
-            <Text style={styles.subHeading}>OUR VALUES</Text>
+            <Text style={styles.subHeading}>NOS VALEURS</Text>
             <View style={styles.list}>
               <View style={styles.listItem}>
                 <View style={styles.bullet} />
                 <Text style={styles.listText}>
-                  <Text style={styles.bold}>Top quality service delivery</Text> to our customers is our priority.
+                  La <Text style={styles.bold}>prestation de services de qualité supérieure</Text> à nos clients est notre priorité.
                 </Text>
               </View>
               <View style={styles.listItem}>
                 <View style={styles.bullet} />
                 <Text style={styles.listText}>
-                  <Text style={styles.bold}>Assured product quality</Text> and affordability coupled with innovative technologies.
+                  Une <Text style={styles.bold}>qualité de produit assurée</Text> et abordable, associée à des technologies innovantes.
                 </Text>
               </View>
               <View style={styles.listItem}>
                 <View style={styles.bullet} />
                 <Text style={styles.listText}>
-                  <Text style={styles.bold}>Strategic partnerships</Text> with other health providers to deliver health solutions.
+                  Des <Text style={styles.bold}>partenariats stratégiques</Text> avec d'autres prestataires de santé pour fournir des solutions de santé.
                 </Text>
               </View>
             </View>

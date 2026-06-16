@@ -18,8 +18,8 @@ export default function ProfileScreen() {
 
   const menuItems = [
     { icon: Bell, label: 'Notifications', color: '#3b82f6' },
-    { icon: Shield, label: 'Security & Privacy', color: '#10b981' },
-    { icon: HelpCircle, label: 'Help & Support', color: '#f59e0b' },
+    { icon: Shield, label: 'Sécurité et confidentialité', color: '#10b981' },
+    { icon: HelpCircle, label: 'Aide et support', color: '#f59e0b' },
   ];
 
   const toggleEdit = () => {
@@ -35,7 +35,7 @@ export default function ProfileScreen() {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     
     if (permissionResult.granted === false) {
-      Alert.alert('Permission Denied', 'You need to grant permission to access your photos.');
+      Alert.alert('Permission refusée', 'Vous devez accorder la permission d\'accéder à vos photos.');
       return;
     }
 
@@ -79,10 +79,10 @@ export default function ProfileScreen() {
 
       await fetchProfile(); // refresh the auth context
       setIsEditing(false);
-      Alert.alert("Success", "Profile updated successfully!");
+      Alert.alert("Succès", "Profil mis à jour avec succès !");
     } catch (error) {
       console.error("Save profile error", error);
-      Alert.alert("Error", "Could not save profile updates.");
+      Alert.alert("Erreur", "Impossible d'enregistrer les mises à jour du profil.");
     } finally {
       setIsSaving(false);
     }
@@ -94,11 +94,11 @@ export default function ProfileScreen() {
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.title}>My Profile</Text>
+          <Text style={styles.title}>Mon profil</Text>
           {!isEditing ? (
             <TouchableOpacity style={styles.editToggleBtn} onPress={toggleEdit}>
               <Edit2 size={18} color="#033487" />
-              <Text style={styles.editToggleText}>Edit</Text>
+              <Text style={styles.editToggleText}>Modifier</Text>
             </TouchableOpacity>
           ) : null}
         </View>
@@ -132,13 +132,13 @@ export default function ProfileScreen() {
               style={styles.nameInput}
               value={editFirstName}
               onChangeText={setEditFirstName}
-              placeholder="First Name"
+              placeholder="Prénom"
               placeholderTextColor="#94a3b8"
             />
           ) : (
-            <Text style={styles.userName}>{user?.first_name || 'Customer'}</Text>
+            <Text style={styles.userName}>{user?.first_name || 'Client'}</Text>
           )}
-          <Text style={styles.userRole}>Premium Client</Text>
+          <Text style={styles.userRole}>Client Premium</Text>
         </View>
 
         <View style={styles.infoSection}>
@@ -147,8 +147,8 @@ export default function ProfileScreen() {
               <Mail size={20} color="#64748b" />
             </View>
             <View style={styles.infoText}>
-              <Text style={styles.infoLabel}>Email Address (Read Only)</Text>
-              <Text style={styles.infoValue}>{user?.email || 'Not provided'}</Text>
+              <Text style={styles.infoLabel}>Adresse e-mail (Lecture seule)</Text>
+              <Text style={styles.infoValue}>{user?.email || 'Non fourni'}</Text>
             </View>
           </View>
 
@@ -157,17 +157,17 @@ export default function ProfileScreen() {
               <Phone size={20} color="#64748b" />
             </View>
             <View style={styles.infoText}>
-              <Text style={styles.infoLabel}>Phone Number</Text>
+              <Text style={styles.infoLabel}>Numéro de téléphone</Text>
               {isEditing ? (
                  <TextInput 
                    style={styles.phoneInput}
                    value={editPhone}
                    onChangeText={setEditPhone}
-                   placeholder="Enter phone number"
+                   placeholder="Entrez le numéro de téléphone"
                    keyboardType="phone-pad"
                  />
               ) : (
-                 <Text style={styles.infoValue}>{user?.phone || 'Not provided'}</Text>
+                 <Text style={styles.infoValue}>{user?.phone || 'Non fourni'}</Text>
               )}
             </View>
           </View>
@@ -177,7 +177,7 @@ export default function ProfileScreen() {
           <View style={styles.actionButtons}>
             <TouchableOpacity style={styles.cancelBtn} onPress={toggleEdit} disabled={isSaving}>
               <X size={20} color="#64748b" />
-              <Text style={styles.cancelBtnText}>Cancel</Text>
+              <Text style={styles.cancelBtnText}>Annuler</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.saveBtn} onPress={handleSave} disabled={isSaving}>
@@ -186,7 +186,7 @@ export default function ProfileScreen() {
               ) : (
                 <>
                   <Check size={20} color="#ffffff" />
-                  <Text style={styles.saveBtnText}>Save Changes</Text>
+                  <Text style={styles.saveBtnText}>Enregistrer</Text>
                 </>
               )}
             </TouchableOpacity>

@@ -48,7 +48,7 @@ export default function LoginScreen() {
   const handleLogin = async () => {
     setErrorMsg('');
     if (!email.trim() || !password) {
-      setErrorMsg('Please fill in both email and password.');
+      setErrorMsg('Veuillez remplir à la fois l\'e-mail et le mot de passe.');
       shake();
       return;
     }
@@ -61,16 +61,16 @@ export default function LoginScreen() {
       const httpStatus = err?.response?.status;
       if (!err?.response) {
         // Pure network error — don't clear credentials since it's not their fault
-        setErrorMsg('Unable to connect to the server. Make sure you are on the same Wi-Fi as the server and the backend is running.');
+        setErrorMsg('Impossible de se connecter au serveur. Assurez-vous d\'être sur le même réseau Wi-Fi que le serveur et que le backend est en cours d\'exécution.');
         shake();
       } else if (httpStatus === 403) {
-        clearAndShowError(err.response?.data?.error || 'Your account has been blocked. Please contact support.');
+        clearAndShowError(err.response?.data?.error || 'Votre compte a été bloqué. Veuillez contacter le support.');
       } else {
         const serverMsg =
           err.response?.data?.error ||
           err.response?.data?.non_field_errors?.[0] ||
           err.response?.data?.detail;
-        clearAndShowError(serverMsg || 'Invalid email or password. Please try again.');
+        clearAndShowError(serverMsg || 'Adresse e-mail ou mot de passe invalide. Veuillez réessayer.');
       }
     } finally {
       setIsLoading(false);
@@ -90,8 +90,8 @@ export default function LoginScreen() {
               style={styles.logo}
             />
           </View>
-          <Text style={styles.title}>Welcome Back</Text>
-          <Text style={styles.subtitle}>Login to access pharmacy services</Text>
+          <Text style={styles.title}>Bon retour</Text>
+          <Text style={styles.subtitle}>Connectez-vous pour accéder aux services de la pharmacie</Text>
         </View>
 
         <Animated.View style={[styles.form, { transform: [{ translateX: shakeAnim }] }]}>
@@ -105,7 +105,7 @@ export default function LoginScreen() {
           )}
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Email Address</Text>
+            <Text style={styles.label}>Adresse e-mail</Text>
             <TextInput
               style={[styles.input, errorMsg !== '' && styles.inputError]}
               placeholder="john@example.com"
@@ -119,7 +119,7 @@ export default function LoginScreen() {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Password</Text>
+            <Text style={styles.label}>Mot de passe</Text>
             <View style={styles.passwordContainer}>
               <TextInput
                 style={[styles.input, { paddingRight: 50 }, errorMsg !== '' && styles.inputError]}
@@ -143,7 +143,7 @@ export default function LoginScreen() {
             style={styles.forgotPassword}
             onPress={() => router.push('/(auth)/forgot_password')}
           >
-            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+            <Text style={styles.forgotPasswordText}>Mot de passe oublié ?</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -154,13 +154,13 @@ export default function LoginScreen() {
             {isLoading ? (
               <ActivityIndicator color="#ffffff" />
             ) : (
-              <Text style={styles.loginButtonText}>Login</Text>
+              <Text style={styles.loginButtonText}>Se connecter</Text>
             )}
           </TouchableOpacity>
 
           <View style={styles.divider}>
             <View style={styles.dividerLine} />
-            <Text style={styles.dividerText}>OR</Text>
+            <Text style={styles.dividerText}>OU</Text>
             <View style={styles.dividerLine} />
           </View>
 
@@ -177,15 +177,15 @@ export default function LoginScreen() {
                   source={{ uri: 'https://w7.pngwing.com/pngs/326/85/png-transparent-google-logo-google-text-trademark-logo-thumbnail.png' }}
                   style={styles.googleIcon}
                 />
-                <Text style={styles.googleButtonText}>Continue with Google</Text>
+                <Text style={styles.googleButtonText}>Continuer avec Google</Text>
               </>
             )}
           </TouchableOpacity>
 
           <View style={styles.registerLink}>
-            <Text style={styles.registerText}>Don't have an account? </Text>
+            <Text style={styles.registerText}>Vous n'avez pas de compte ? </Text>
             <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
-              <Text style={styles.registerLinkText}>Register here</Text>
+              <Text style={styles.registerLinkText}>S'inscrire ici</Text>
             </TouchableOpacity>
           </View>
 
@@ -194,7 +194,7 @@ export default function LoginScreen() {
             style={{ marginTop: 20, alignItems: 'center' }}
           >
             <Text style={{ color: '#64748b', fontSize: 14, textDecorationLine: 'underline' }}>
-              Have a question? Send us feedback
+              Une question ? Envoyez-nous vos commentaires
             </Text>
           </TouchableOpacity>
         </Animated.View>

@@ -83,8 +83,8 @@ export default function DashboardScreen() {
           <SafeAreaView edges={['top']}>
             <View style={styles.header}>
               <View>
-                <Text style={styles.welcomeText}>Hello,</Text>
-                <Text style={styles.userName}>{user?.first_name || 'Customer'}</Text>
+                <Text style={styles.welcomeText}>Bonjour,</Text>
+                <Text style={styles.userName}>{user?.first_name || 'Client'}</Text>
               </View>
               {isAuthenticated && (
                 <TouchableOpacity style={styles.cartBtn} onPress={() => router.push('/(tabs)/cart')}>
@@ -96,10 +96,10 @@ export default function DashboardScreen() {
 
             <View style={styles.heroContent}>
               <Animated.View entering={FadeInUp.delay(200)} style={styles.heroTextContainer}>
-                <Text style={styles.heroTitle}>Your Health,{"\n"}Digitally Refined.</Text>
-                <Text style={styles.heroSubtitle}>Premium certified medicines delivered with surgical precision.</Text>
+                <Text style={styles.heroTitle}>Votre santé,{"\n"}Raffinée numériquement.</Text>
+                <Text style={styles.heroSubtitle}>Médicaments certifiés de première qualité livrés avec une précision chirurgicale.</Text>
                 <TouchableOpacity style={styles.shopBtn} onPress={() => router.push('/(tabs)/catalog')}>
-                  <Text style={styles.shopBtnText}>Shop Now</Text>
+                  <Text style={styles.shopBtnText}>Acheter maintenant</Text>
                   <ArrowRight size={18} color="#033487" />
                 </TouchableOpacity>
               </Animated.View>
@@ -111,7 +111,7 @@ export default function DashboardScreen() {
                     <Image source={featured.image} style={styles.featuredImage} contentFit="contain" transition={500} />
                   </View>
                   <View style={styles.featuredBadge}>
-                    <Text style={styles.featuredBadgeText}>Featured</Text>
+                    <Text style={styles.featuredBadgeText}>En vedette</Text>
                   </View>
                   <Text style={styles.featuredName} numberOfLines={1}>{featured.name}</Text>
                   <Text style={styles.featuredPrice}>UGX {parseFloat(featured.price).toLocaleString()}</Text>
@@ -128,7 +128,7 @@ export default function DashboardScreen() {
               <View key={i} style={styles.tickerItem}>
                 <Activity size={14} color="#10B981" />
                 <Text style={styles.tickerText}>
-                  Someone ordered <Text style={{ fontWeight: '700' }}>{medicines[(currentIndex + i) % medicines.length]?.name || 'Medicine'}</Text>
+                  Quelqu'un a commandé <Text style={{ fontWeight: '700' }}>{medicines[(currentIndex + i) % medicines.length]?.name || 'un médicament'}</Text>
                 </Text>
               </View>
             ))}
@@ -137,17 +137,17 @@ export default function DashboardScreen() {
 
         {/* Quick Actions */}
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Categories</Text>
+          <Text style={styles.sectionTitle}>Catégories</Text>
           <TouchableOpacity onPress={() => router.push('/(tabs)/catalog')}>
-            <Text style={styles.seeAll}>View All</Text>
+            <Text style={styles.seeAll}>Voir tout</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.categoryGrid}>
           {[
-            { name: 'Medicines', icon: <Pill size={24} color="#2563eb" />, bg: '#eff6ff', route: '/(tabs)/catalog' },
-            { name: 'Feedback', icon: <MessageSquare size={24} color="#ef4444" />, bg: '#fef2f2', route: '/(tabs)/feedback' },
-            { name: 'Orders', icon: <Truck size={24} color="#10b981" />, bg: '#f0fdf4', route: '/(tabs)/orders' },
+            { name: 'Médicaments', icon: <Pill size={24} color="#2563eb" />, bg: '#eff6ff', route: '/(tabs)/catalog' },
+            { name: 'Commentaires', icon: <MessageSquare size={24} color="#ef4444" />, bg: '#fef2f2', route: '/(tabs)/feedback' },
+            { name: 'Commandes', icon: <Truck size={24} color="#10b981" />, bg: '#f0fdf4', route: '/(tabs)/orders' },
             { name: 'Support', icon: <ShieldCheck size={24} color="#f59e0b" />, bg: '#fffbeb', route: '/(tabs)/contact' }
           ].map((item, index) => (
             <TouchableOpacity key={index} style={styles.categoryItem} onPress={() => router.push(item.route as any)}>
@@ -161,7 +161,7 @@ export default function DashboardScreen() {
 
         {/* Medicines Grid */}
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Popular Products</Text>
+          <Text style={styles.sectionTitle}>Produits populaires</Text>
         </View>
 
         {isLoading ? (

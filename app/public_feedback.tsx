@@ -28,7 +28,7 @@ export default function PublicFeedbackScreen() {
 
   const handleSubmit = async () => {
     if (!name || !email || !message) {
-      Alert.alert('Error', 'Please fill in all required fields (Name, Email, Message).');
+      Alert.alert('Erreur', 'Veuillez remplir tous les champs obligatoires (Nom, E-mail, Message).');
       return;
     }
 
@@ -40,7 +40,7 @@ export default function PublicFeedbackScreen() {
         phone: phone || 'N/A', 
         message 
       });
-      Alert.alert('Success', 'Thank you for your feedback!', [
+      Alert.alert('Succès', 'Merci pour vos commentaires !', [
         { text: 'OK', onPress: () => router.back() }
       ]);
       setName('');
@@ -49,7 +49,7 @@ export default function PublicFeedbackScreen() {
       setMessage('');
     } catch (error: any) {
       console.error('Feedback error:', error);
-      Alert.alert('Error', 'Failed to submit feedback. Please try again.');
+      Alert.alert('Erreur', 'Échec de l\'envoi des commentaires. Veuillez réessayer.');
     } finally {
       setIsLoading(false);
     }
@@ -65,7 +65,7 @@ export default function PublicFeedbackScreen() {
           <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
             <ArrowLeft size={24} color="#0f172a" />
           </TouchableOpacity>
-          <Text style={styles.navTitle}>Feedback</Text>
+          <Text style={styles.navTitle}>Commentaires</Text>
           <View style={{ width: 40 }} />
         </View>
 
@@ -74,16 +74,16 @@ export default function PublicFeedbackScreen() {
             <View style={styles.iconContainer}>
               <MessageSquare size={32} color="#10b981" />
             </View>
-            <Text style={styles.title}>We value your input</Text>
-            <Text style={styles.subtitle}>Any person can send a message directly to our pharmacy team. No account needed.</Text>
+            <Text style={styles.title}>Votre avis nous intéresse</Text>
+            <Text style={styles.subtitle}>Toute personne peut envoyer un message directement à notre équipe de pharmacie. Aucun compte requis.</Text>
           </View>
 
           <View style={styles.formContainer}>
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>Full Name *</Text>
+              <Text style={styles.label}>Nom complet *</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Your name"
+                placeholder="Votre nom"
                 value={name}
                 onChangeText={setName}
                 placeholderTextColor="#94a3b8"
@@ -91,10 +91,10 @@ export default function PublicFeedbackScreen() {
             </View>
 
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>Email Address *</Text>
+              <Text style={styles.label}>Adresse e-mail *</Text>
               <TextInput
                 style={styles.input}
-                placeholder="you@domain.com"
+                placeholder="vous@domaine.com"
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
@@ -104,10 +104,10 @@ export default function PublicFeedbackScreen() {
             </View>
 
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>Phone (Optional)</Text>
+              <Text style={styles.label}>Téléphone (Optionnel)</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Phone number"
+                placeholder="Numéro de téléphone"
                 value={phone}
                 onChangeText={setPhone}
                 keyboardType="phone-pad"
@@ -116,10 +116,10 @@ export default function PublicFeedbackScreen() {
             </View>
 
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>Your Message *</Text>
+              <Text style={styles.label}>Votre message *</Text>
               <TextInput
                 style={[styles.input, styles.textArea]}
-                placeholder="How was your experience with Loutfi Pharmacy?"
+                placeholder="Comment s'est passée votre expérience avec la Pharmacie Loutfi ?"
                 value={message}
                 onChangeText={setMessage}
                 multiline
@@ -137,7 +137,7 @@ export default function PublicFeedbackScreen() {
               {isLoading ? (
                 <ActivityIndicator color="#ffffff" />
               ) : (
-                <Text style={styles.submitButtonText}>Submit Feedback</Text>
+                <Text style={styles.submitButtonText}>Envoyer les commentaires</Text>
               )}
             </TouchableOpacity>
           </View>

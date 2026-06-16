@@ -40,7 +40,7 @@ export default function CatalogScreen() {
       setMedicines(res.data.results || res.data);
     } catch (error) {
       console.error("Failed to fetch catalog", error);
-      Alert.alert("Error", "Could not load medicine catalog.");
+      Alert.alert("Erreur", "Impossible de charger le catalogue de médicaments.");
     } finally {
       setIsLoading(false);
       setIsRefreshing(false);
@@ -56,11 +56,11 @@ export default function CatalogScreen() {
     try {
       await api.post('orders/cart/', { medicine_id: med.id, quantity: 1 });
       await fetchCartCount();
-      Alert.alert("Success", `${med.name} added to cart!`);
+      Alert.alert("Succès", `${med.name} ajouté au panier !`);
     } catch (error: any) {
       console.error("Failed adding to cart", error);
-      const msg = error.response?.data?.error || "Failed to add to cart.";
-      Alert.alert("Error", msg);
+      const msg = error.response?.data?.error || "Échec de l'ajout au panier.";
+      Alert.alert("Erreur", msg);
     }
   };
 
@@ -73,7 +73,7 @@ export default function CatalogScreen() {
     <View style={styles.card}>
       <TouchableOpacity
         style={styles.imageContainer}
-        onPress={() => Alert.alert(item.name, item.description)} // Quick detail view
+        onPress={() => Alert.alert(item.name, item.description || "Aucune description disponible")} // Quick detail view
       >
         {item.image ? (
           <Image
@@ -94,7 +94,7 @@ export default function CatalogScreen() {
       <View style={styles.cardInfo}>
         <Text style={styles.medName} numberOfLines={1}>{item.name}</Text>
         <Text style={styles.medDesc} numberOfLines={2}>
-          {item.description || 'No description available'}
+          {item.description || 'Aucune description disponible'}
         </Text>
 
         <TouchableOpacity
@@ -104,7 +104,7 @@ export default function CatalogScreen() {
         >
           <ShoppingCart size={16} color="#ffffff" />
           <Text style={styles.addButtonText}>
-            {item.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+            {item.stock > 0 ? 'Ajouter au panier' : 'Rupture de stock'}
           </Text>
         </TouchableOpacity>
       </View>
@@ -134,8 +134,8 @@ export default function CatalogScreen() {
     if (item.type === 'HEADER') {
       return (
         <View style={styles.header}>
-          <Text style={styles.title}>Medical Catalog</Text>
-          <Text style={styles.subtitle}>Find your medications easily</Text>
+          <Text style={styles.title}>Catalogue médical</Text>
+          <Text style={styles.subtitle}>Trouvez facilement vos médicaments</Text>
         </View>
       );
     }
@@ -147,7 +147,7 @@ export default function CatalogScreen() {
             <Search size={20} color="#94a3b8" />
             <TextInput
               style={styles.searchInput}
-              placeholder="Search medicine..."
+              placeholder="Rechercher un médicament..."
               value={searchQuery}
               onChangeText={setSearchQuery}
               placeholderTextColor="#94a3b8"
@@ -163,7 +163,7 @@ export default function CatalogScreen() {
           <View key={med.id} style={styles.card}>
             <TouchableOpacity
               style={styles.imageContainer}
-              onPress={() => Alert.alert(med.name, med.description)}
+              onPress={() => Alert.alert(med.name, med.description || "Aucune description disponible")}
             >
               {med.image ? (
                 <Image
@@ -184,7 +184,7 @@ export default function CatalogScreen() {
             <View style={styles.cardInfo}>
               <Text style={styles.medName} numberOfLines={1}>{med.name}</Text>
               <Text style={styles.medDesc} numberOfLines={2}>
-                {med.description || 'No description available'}
+                {med.description || 'Aucune description disponible'}
               </Text>
 
               <TouchableOpacity
@@ -194,7 +194,7 @@ export default function CatalogScreen() {
               >
                 <ShoppingCart size={16} color="#ffffff" />
                 <Text style={styles.addButtonText}>
-                  {med.stock > 0 ? 'Add' : 'None'}
+                  {med.stock > 0 ? 'Ajouter' : 'Aucun'}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -211,7 +211,7 @@ export default function CatalogScreen() {
       {isLoading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#033487" />
-          <Text style={styles.loadingText}>Fetching Medicines...</Text>
+          <Text style={styles.loadingText}>Récupération des médicaments...</Text>
         </View>
       ) : (
         <FlatList
@@ -225,7 +225,7 @@ export default function CatalogScreen() {
           ListFooterComponent={<Footer />}
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>No medicines found matching "{searchQuery}"</Text>
+              <Text style={styles.emptyText}>Aucun médicament trouvé correspondant à "{searchQuery}"</Text>
             </View>
           }
         />
