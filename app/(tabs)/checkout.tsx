@@ -13,7 +13,7 @@ export default function CheckoutScreen() {
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [address, setAddress] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('AIRTEL');
+  const [paymentMethod, setPaymentMethod] = useState('HOLO');
   const [paymentReference, setPaymentReference] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -61,7 +61,7 @@ export default function CheckoutScreen() {
       return;
     }
 
-    if ((paymentMethod === 'AIRTEL' || paymentMethod === 'MTN') && !paymentReference.trim()) {
+    if ((paymentMethod === 'HOLO' || paymentMethod === 'MVOLA') && !paymentReference.trim()) {
       Alert.alert("Informations manquantes", "Veuillez saisir l'identifiant de référence de la transaction.");
       return;
     }
@@ -149,28 +149,28 @@ export default function CheckoutScreen() {
             <Text style={styles.sectionHeading}>Sélectionnez le mode de paiement</Text>
 
             <TouchableOpacity 
-              style={[styles.radioCard, paymentMethod === 'AIRTEL' && styles.radioCardActive]}
-              onPress={() => setPaymentMethod('AIRTEL')}
+              style={[styles.radioCard, paymentMethod === 'HOLO' && styles.radioCardActive]}
+              onPress={() => setPaymentMethod('HOLO')}
             >
               <View style={styles.radioInner}>
                 <View style={styles.radioTextContainer}>
-                  <Text style={styles.radioTitle}>Airtel Pay <Text style={styles.airtelHint}>USSD: *185*9#</Text></Text>
-                  <Text style={styles.radioSub}>Paiement marchand sécurisé (Airtel Ouganda)</Text>
+                  <Text style={styles.radioTitle}>Holo <Text style={styles.airtelHint}>Telma Comores</Text></Text>
+                  <Text style={styles.radioSub}>Paiement mobile sécurisé par Holo</Text>
                 </View>
-                {paymentMethod === 'AIRTEL' && <ShieldCheck color="#10B981" size={20} />}
+                {paymentMethod === 'HOLO' && <ShieldCheck color="#10B981" size={20} />}
               </View>
             </TouchableOpacity>
 
             <TouchableOpacity 
-              style={[styles.radioCard, paymentMethod === 'MTN' && styles.radioCardActive]}
-              onPress={() => setPaymentMethod('MTN')}
+              style={[styles.radioCard, paymentMethod === 'MVOLA' && styles.radioCardActive]}
+              onPress={() => setPaymentMethod('MVOLA')}
             >
               <View style={styles.radioInner}>
                 <View style={styles.radioTextContainer}>
-                  <Text style={styles.radioTitle}>MTN MoMoPay <Text style={styles.mtnHint}>USSD: *165*3#</Text></Text>
-                  <Text style={styles.radioSub}>Paiement marchand sécurisé (MTN Ouganda)</Text>
+                  <Text style={styles.radioTitle}>MVola <Text style={styles.mtnHint}>Comores</Text></Text>
+                  <Text style={styles.radioSub}>Paiement mobile sécurisé par MVola</Text>
                 </View>
-                {paymentMethod === 'MTN' && <ShieldCheck color="#10B981" size={20} />}
+                {paymentMethod === 'MVOLA' && <ShieldCheck color="#10B981" size={20} />}
               </View>
             </TouchableOpacity>
 
@@ -189,15 +189,15 @@ export default function CheckoutScreen() {
           </View>
 
           {/* Instructions for Mobile Money */}
-          {(paymentMethod === 'AIRTEL' || paymentMethod === 'MTN') && (
+          {(paymentMethod === 'HOLO' || paymentMethod === 'MVOLA') && (
             <View style={styles.instructionsBox}>
-              <Text style={styles.instructionsTitle}>Instructions de paiement marchand</Text>
+              <Text style={styles.instructionsTitle}>Instructions de paiement mobile ({paymentMethod})</Text>
               
               <View style={styles.instructionSteps}>
-                <Text style={styles.stepText}>1. Composez le <Text style={styles.bold}>{paymentMethod === 'MTN' ? '*165*3#' : '*185*9#'}</Text> sur votre téléphone</Text>
-                <Text style={styles.stepText}>2. Saisissez {paymentMethod === 'MTN' ? 'l\'ID marchand' : 'le numéro d\'entreprise'}: <Text style={styles.primaryText}>[MERCHANT_ID]</Text></Text>
-                <Text style={styles.stepText}>3. Saisissez le montant : <Text style={styles.bold}>UGX {total.toLocaleString()}</Text></Text>
-                <Text style={styles.stepText}>4. Saisissez votre code PIN pour confirmer</Text>
+                <Text style={styles.stepText}>1. Ouvrez votre menu ou application <Text style={styles.bold}>{paymentMethod}</Text> sur votre téléphone</Text>
+                <Text style={styles.stepText}>2. Effectuez le transfert vers la pharmacie : <Text style={styles.primaryText}>+269 332 11 22</Text></Text>
+                <Text style={styles.stepText}>3. Saisissez le montant : <Text style={styles.bold}>KMF {total.toLocaleString()}</Text></Text>
+                <Text style={styles.stepText}>4. Saisissez votre code secret pour confirmer</Text>
               </View>
 
               <View style={styles.refBox}>
@@ -223,7 +223,7 @@ export default function CheckoutScreen() {
               <ActivityIndicator color="#ffffff" />
             ) : (
               <Text style={styles.submitBtnText}>
-                {paymentMethod === 'CASH' ? 'Passer la commande et payer en espèces' : `J'ai payé UGX ${total.toLocaleString()}`}
+                {paymentMethod === 'CASH' ? 'Passer la commande et payer en espèces' : `J'ai payé KMF ${total.toLocaleString()}`}
               </Text>
             )}
           </TouchableOpacity>
