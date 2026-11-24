@@ -69,28 +69,12 @@ export default function CheckoutScreen() {
     setIsProcessing(true);
 
     try {
-      // Loop through cart and create orders based on web reference
-      for (const item of cartItems) {
-        const orderPayload = {
-          medicine: item.medicine_detail.id,
-          quantity: item.quantity,
-          payment_method: paymentMethod,
-          payment_reference: paymentReference,
-          payment_status: paymentMethod === 'CASH' ? 'UNPAID' : 'PENDING_VERIFICATION'
-        };
-        const orderRes = await api.post('orders/', orderPayload);
-        const orderId = orderRes.data.id;
+      await api.post('orders/checkout/', {
+        address: address,
+        payment_method: paymentMethod,
+        payment_reference: paymentReference
+      });
 
-        // Post to delivery
-        const deliveryPayload = {
-          order: orderId,
-          address: address
-        };
-        await api.post('delivery/', deliveryPayload);
-      }
-
-      // Clear the cart
-      await api.delete('orders/cart/clear/');
       await fetchCartCount();
 
       Alert.alert(
@@ -99,9 +83,10 @@ export default function CheckoutScreen() {
         [{ text: "OK", onPress: () => router.push('/(tabs)/orders') }]
       );
 
-    } catch (error) {
+    } catch (error: any) {
       console.error("Order Failed", error);
-      Alert.alert("Échec de la commande", "Une erreur est survenue. Assurez-vous d'être connecté.");
+      const errMsg = error.response?.data?.error || "Une erreur est survenue lors de la commande.";
+      Alert.alert("Échec de la commande", errMsg);
     } finally {
       setIsProcessing(false);
     }
